@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Order Summary</title>
+
+<link rel="stylesheet" href="css/summary.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Order Summary</h1>
+
+<div id="customerDetails"></div>
+
+<hr>
+
+<h2>Products</h2>
+
+<div id="productList"></div>
+
+<hr>
+<div class="couponBox">
+
+    <input
+    type="text"
+    id="couponCode"
+    placeholder="Enter Coupon Code">
+
+    <button id="applyCoupon">
+
+        Apply
+
+    </button>
+
+</div>
+
+<p>
+
+Discount :
+
+₹<span id="discount">0</span>
+
+</p>
+
+<h2>
+
+Grand Total :
+
+₹<span id="grandTotal"></span>
+
+</h2>
+<h2>
+
+Grand Total :
+₹ <span id="grandTotal">0</span>
+
+</h2>
+
+<button id="confirmBtn">
+
+Confirm Order
+
+</button>
+
+</div>
+
+<script src="js/summary.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

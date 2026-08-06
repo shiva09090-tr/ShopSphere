@@ -1,0 +1,86 @@
+#ordersContainer{
+
+    width:90%;
+    margin:auto;
+
+}
+
+.orderCard{
+
+    background:white;
+
+    margin:20px 0;
+
+    padding:20px;
+
+    border-radius:10px;
+
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+
+}
+
+.orderHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.status{
+
+    padding:6px 15px;
+
+    border-radius:20px;
+
+    color:white;
+
+}
+
+.pending{
+
+    background:orange;
+
+}
+
+.confirmed{
+
+    background:blue;
+
+}
+
+.delivered{
+
+    background:green;
+
+}
+
+.cancelled{
+
+    background:red;
+
+}
+
+.product{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:10px 0;
+
+}
+
+button{
+
+    padding:8px 20px;
+
+    border:none;
+
+    cursor:pointer;
+
+    margin-top:10px;
+
+}

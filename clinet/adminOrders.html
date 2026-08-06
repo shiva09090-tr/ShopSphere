@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Orders</title>
+    <link rel="stylesheet" href="css/adminOrders.css">
+</head>
+
+<body>
+    <button id="exportBtn">
+    📊 Export Excel
+</button>
+    <div id="stats">
+
+    <div class="box">
+
+        <h2 id="totalOrders">0</h2>
+
+        <p>Total Orders</p>
+
+    </div>
+
+    <div class="box">
+
+        <h2 id="pendingOrders">0</h2>
+
+        <p>Pending</p>
+
+    </div>
+
+    <div class="box">
+
+        <h2 id="deliveredOrders">0</h2>
+
+        <p>Delivered</p>
+
+    </div>
+
+    <div class="box">
+
+        <h2 id="revenue">₹0</h2>
+
+        <p>Revenue</p>
+
+    </div>
+
+</div>
+    <h1>📦 Customer Orders</h1>
+    <input
+    type="text"
+    id="search"
+    placeholder="Search Customer..."
+    class="search-input">
+    <label for="statusFilter" class="search-label">Filter orders by status</label>
+    <select id="statusFilter" class="search-input" aria-label="Filter orders by status">
+
+    <option value="All">All Orders</option>
+
+    <option value="Pending">Pending</option>
+
+    <option value="Delivered">Delivered</option>
+
+    <option value="Cancelled">Cancelled</option>
+
+</select>
+
+    <div id="ordersContainer"></div>
+
+    <script src="js/adminOrders.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+</html>
