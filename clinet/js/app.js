@@ -8,7 +8,7 @@ const sortBy = document.getElementById("sortBy");
 
 const cartCount = document.getElementById("cartCount");
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://shopsphere-sedh.onrender.com/api/products";
 
 let allProducts = [];
 

@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/products";
+const API = "https://shopsphere-sedh.onrender.com/api/products";
 
 const form = document.getElementById("productForm");
 const productList = document.getElementById("productList");
@@ -189,7 +189,7 @@ async function loadDashboardStats() {
 
     try {
 
-        const res = await fetch("http://localhost:5000/api/dashboard-stats");
+        const res = await fetch("https://shopsphere-sedh.onrender.com/api/dashboard-stats");
 
         const data = await res.json();
 
@@ -219,7 +219,7 @@ loadDashboardStats();
 async function loadNotifications(){
 
     const res = await fetch(
-        "http://localhost:5000/api/admin/orders"
+        "https://shopsphere-sedh.onrender.com/api/admin/orders"
     );
 
     const result = await res.json();
@@ -238,7 +238,7 @@ loadNotifications();
 setInterval(loadNotifications,5000);
 async function loadRecentOrders(){
 
-    const res = await fetch("http://localhost:5000/api/admin/orders");
+    const res = await fetch("https://shopsphere-sedh.onrender.com/api/admin/orders");
 
     const result = await res.json();
 
@@ -267,7 +267,7 @@ async function loadRecentOrders(){
 loadRecentOrders();
 async function loadLowStock(){
 
-    const res = await fetch("http://localhost:5000/api/products");
+    const res = await fetch("https://shopsphere-sedh.onrender.com/api/products");
 
     const result = await res.json();
 

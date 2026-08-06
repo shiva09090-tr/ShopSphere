@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/admin/orders";
+const API = "https://shopsphere-sedh.onrender.com/api/admin/orders";
 
 const container = document.getElementById("ordersContainer");
 const search = document.getElementById("search");
@@ -196,7 +196,7 @@ document
 
     window.open(
 
-        "http://localhost:5000/api/admin/export",
+        "https://shopsphere-sedh.onrender.com/api/admin/export",
 
         "_blank"
 

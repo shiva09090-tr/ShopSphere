@@ -156,7 +156,7 @@ const order = {
 
 try {
 
-    await fetch("http://localhost:5000/api/orders", {
+    await fetch("https://shopsphere-sedh.onrender.com/api/orders", {
 
         method: "POST",
 

@@ -4,7 +4,7 @@ const container = document.getElementById("ordersContainer");
 
 async function loadOrders(){
 
-    const res = await fetch(`http://localhost:5000/api/admin/user/${user._id}`);
+    const res = await fetch(`https://shopsphere-sedh.onrender.com/api/admin/user/${user._id}`);
 
     const result = await res.json();
 
@@ -104,7 +104,7 @@ async function cancelOrder(id){
 
     await fetch(
 
-    `http://localhost:5000/api/admin/cancel/${id}`,
+    `https://shopsphere-sedh.onrender.com/api/admin/cancel/${id}`,
 
     {
 

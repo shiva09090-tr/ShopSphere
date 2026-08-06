@@ -1,4 +1,4 @@
-const DASHBOARD_API = "http://localhost:5000/api/dashboard-stats";
+const DASHBOARD_API = "https://shopsphere-sedh.onrender.com/api/dashboard-stats";
 
 async function loadDashboard(){
 

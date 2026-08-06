@@ -1,6 +1,6 @@
 const form = document.getElementById("loginForm");
 
-const API = "http://localhost:5000/api/auth/login";
+const API = "https://shopsphere-sedh.onrender.com/api/auth/login";
 
 form.addEventListener("submit", async (e) => {
 

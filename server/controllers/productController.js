@@ -6,7 +6,7 @@ const addProduct = async (req, res) => {
     try {
 
         const image = req.file
-            ? `http://localhost:5000/uploads/${req.file.filename}`
+            ? `https://shopsphere-sedh.onrender.com/uploads/${req.file.filename}`
             : "";
 
         const product = await Product.create({
@@ -99,7 +99,7 @@ const updateProduct = async (req, res) => {
     if(req.file){
 
     req.body.image =
-    `http://localhost:5000/uploads/${req.file.filename}`;
+    `https://shopsphere-sedh.onrender.com/uploads/${req.file.filename}`;
 
 }
     const updatedProduct = await Product.findByIdAndUpdate(

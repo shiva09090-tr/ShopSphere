@@ -1,6 +1,6 @@
 const id = localStorage.getItem("selectedOrder");
 
-const API = "http://localhost:5000/api/admin/orders";
+const API = "https://shopsphere-sedh.onrender.com/api/admin/orders";
 
 async function loadOrder(){
 
