@@ -1,5 +1,5 @@
-const Product = require("../models/product");
-const Order = require("../models/order");
+const Product = require("../models/Product");
+const Order = require("../models/Order");
 
 const getDashboardStats = async (req, res) => {
 
