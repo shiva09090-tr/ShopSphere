@@ -17,99 +17,252 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <body>
 
-<nav>
+<header class="top-navbar">
 
-<div class="logo">
+    <div class="logo">
+        <i class="fa-solid fa-store"></i>
+        <span>ShopSphere</span>
+    </div>
 
-ShopSphere
+    <div class="search-box">
 
-</div>
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-<div>
-
-<input
-type="text"
-placeholder="Search Products..."
-id="search">
-
-</div>
-
-<div class="icons">
-
-    <div class="userSection">
-
-    <span id="username"></span>
-
-    <button id="loginBtn">
-        Login
-    </button>
-
-    <button id="logoutBtn" style="display:none;">
-        Logout
-    </button>
-
-</div>
-
-    <i class="fa-solid fa-heart"></i>
-
-   <div class="cart-icon" onclick="window.location='cart.html'">
-
-        <i class="fa-solid fa-cart-shopping"></i>
-
-        <span id="cartCount">0</span>
+        <input
+        type="text"
+        id="search"
+        placeholder="Search Products...">
 
     </div>
-    <button id="themeToggle" title="Dark Mode">
-    🌙
-</button>
+
+    <div class="nav-icons">
+
+        <span id="username"></span>
+
+        <button id="loginBtn">
+            <i class="fa-regular fa-user"></i>
+            Login
+        </button>
+
+        <button id="logoutBtn" style="display:none;">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+
+        <div class="wishlist">
+            <i class="fa-regular fa-heart"></i>
+        </div>
+
+        <div class="cart-icon"
+        onclick="window.location='cart.html'">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <span id="cartCount">0</span>
+
+        </div>
+
+    </div>
+<div class="mobile-menu">
+
+
+<a href="#">Home</a>
+
+<a href="#productsSection">Products</a>
+
+<a href="myorders.html">Orders</a>
+
+<a href="#about">About</a>
+
+<a href="#">Contact</a>
+
 
 </div>
+</header>
+<nav class="menu-bar">
+
+    <a href="#">Home</a>
+
+    <a href="#productsSection">Products</a>
+
+    <a href="myorders.html">Orders</a>
+
+    <a href="#about">About</a>
+
+    <a href="#footer">Contact</a>
 
 </nav>
 
-<section class="banner">
+<section class="hero">
 
-<h1>Welcome To ShopSphere</h1>
+<div class="slide active">
 
-<p>Best Deals Everyday</p>
+<img src="images/banner1.jpg">
+
+<div class="hero-text">
+
+<h1>Latest Collection</h1>
+
+<p>Up To 60% OFF</p>
 
 <button>Shop Now</button>
 
+</div>
+
+</div>
+
+<div class="slide">
+
+<img src="images/banner2.jpg">
+
+<div class="hero-text">
+
+<h1>New Fashion</h1>
+
+<p>Trending Products</p>
+
+<button>Explore</button>
+
+</div>
+
+</div>
+
+<div class="slide">
+
+<img src="images/banner3.jpg">
+
+<div class="hero-text">
+
+<h1>Gaming Laptop</h1>
+
+<p>Best Deals</p>
+
+<button>Buy Now</button>
+
+</div>
+
+</div>
+
 </section>
+<!-- HERO SLIDER START -->
+
+<section class="hero">
+
+    <div class="slider">
+
+        <div class="slide active">
+
+            <img src="images/banner1.jpg">
+
+            <div class="overlay">
+
+                <h1>UP TO 70% OFF</h1>
+
+                <p>Latest Electronics Collection</p>
+
+                <button onclick="location.href='#productsSection'">
+                    Shop Now
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="slide">
+
+            <img src="images/banner2.jpg">
+
+            <div class="overlay">
+
+                <h1>NEW FASHION ARRIVALS</h1>
+
+                <p>Premium Fashion Collection</p>
+
+                <button onclick="location.href='#productsSection'">
+                    Explore
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="slide">
+
+            <img src="images/banner3.jpg">
+
+            <div class="overlay">
+
+                <h1>LIMITED SHOES SALE</h1>
+
+                <p>Grab Before Stock Ends</p>
+
+                <button onclick="location.href='#productsSection'">
+                    Buy Now
+                </button>
+
+            </div>
+
+        </div>
+
+        <button class="prev">&#10094;</button>
+
+        <button class="next">&#10095;</button>
+
+        <div class="dots">
+
+            <span class="dot active"></span>
+
+            <span class="dot"></span>
+
+            <span class="dot"></span>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- HERO SLIDER END -->
 
 <!-- Categories -->
 
-<section class="categories">
+<section class="category-section">
 
-    <div class="category">
-        📱
-        <span>Mobiles</span>
-    </div>
+<h2>Shop By Category</h2>
 
-    <div class="category">
-        💻
-        <span>Laptops</span>
-    </div>
+<div class="categories">
 
-    <div class="category">
-        👟
-        <span>Shoes</span>
-    </div>
+<div class="category-card">
+<i class="fa-solid fa-mobile-screen-button"></i>
+<h3>Mobiles</h3>
+</div>
 
-    <div class="category">
-        ⌚
-        <span>Watches</span>
-    </div>
+<div class="category-card">
+<i class="fa-solid fa-laptop"></i>
+<h3>Laptops</h3>
+</div>
 
-    <div class="category">
-        👕
-        <span>Fashion</span>
-    </div>
+<div class="category-card">
+<i class="fa-solid fa-shirt"></i>
+<h3>Fashion</h3>
+</div>
 
-    <div class="category">
-        🎧
-        <span>Accessories</span>
-    </div>
+<div class="category-card">
+<i class="fa-solid fa-shoe-prints"></i>
+<h3>Shoes</h3>
+</div>
+
+<div class="category-card">
+<i class="fa-regular fa-clock"></i>
+<h3>Watches</h3>
+</div>
+
+<div class="category-card">
+<i class="fa-solid fa-headphones"></i>
+<h3>Accessories</h3>
+</div>
+
+</div>
 
 </section>
 
@@ -159,25 +312,78 @@ id="search">
     </select>
 
 </div>
-<h2 class="title">Featured Products</h2>
+<section id="productsSection">
 
-<div id="products"></div>
-
-<section>
-
-<h2 class="title">
+<h2 class="section-title">
 
 Featured Products
 
 </h2>
-
 <div id="products"></div>
+</section>
+<section class="offer">
+
+<h2>
+
+⏰ Limited Time Offer
+
+</h2>
+
+<h1>
+
+Up To 70% OFF
+
+</h1>
+
+<button onclick="location.href='#productsSection'">
+
+Shop Now
+
+</button>
 
 </section>
+<section id="about">
+
+<h2>
+
+About ShopSphere
+
+</h2>
+
+<p>
+
+ShopSphere is an online shopping platform providing quality products with secure payments and fast delivery.
+
+</p>
+
+</section>
+<footer id="footer">
+
+<h2>
+
+ShopSphere
+
+</h2>
+
+<p>
+
+© 2026 All Rights Reserved
+
+</p>
+
+</footer>
+
+
+<button id="topBtn">
+
+↑
+
+</button>
 
 <script src="js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="js/slide.js"></script>
+<script src="js/navbar.js"></script>
 </body>
 
 </html>
