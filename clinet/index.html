@@ -1,389 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ShopSphere</title>
-
+<title>ShopSphere | Online Store</title>
 <link rel="stylesheet" href="css/style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-
 <body>
 
 <header class="top-navbar">
-
-    <div class="logo">
+    <a class="logo" href="index.html" aria-label="ShopSphere Home">
         <i class="fa-solid fa-store"></i>
         <span>ShopSphere</span>
-    </div>
+    </a>
 
     <div class="search-box">
-
         <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input
-        type="text"
-        id="search"
-        placeholder="Search Products...">
-
+        <input type="text" id="search" placeholder="Search products..." autocomplete="off">
     </div>
 
-    <div class="nav-icons">
+    <div class="nav-actions">
 
-        <span id="username"></span>
-
-        <button id="loginBtn">
-            <i class="fa-regular fa-user"></i>
-            Login
-        </button>
-
-        <button id="logoutBtn" style="display:none;">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </button>
-
-        <div class="wishlist">
-            <i class="fa-regular fa-heart"></i>
-        </div>
-
-        <div class="cart-icon"
-        onclick="window.location='cart.html'">
-
-            <i class="fa-solid fa-cart-shopping"></i>
-
-            <span id="cartCount">0</span>
-
-        </div>
-
-    </div>
-<div class="mobile-menu">
+    <!-- USERNAME -->
+    <span id="username" class="username"></span>
 
 
-<a href="#">Home</a>
+    <!-- LOGIN -->
+    <a href="login.html"
+       id="loginBtn"
+       class="nav-action-btn">
 
-<a href="#productsSection">Products</a>
+        <i class="fa-regular fa-user"></i>
 
-<a href="myorders.html">Orders</a>
+        <span>Login</span>
 
-<a href="#about">About</a>
+    </a>
 
-<a href="#">Contact</a>
 
+    <!-- LOGOUT -->
+    <button
+        id="logoutBtn"
+        class="nav-action-btn logout-btn"
+        type="button"
+        style="display:none;">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        <span>Logout</span>
+
+    </button>
+
+
+    <!-- WISHLIST -->
+    <button
+        class="icon-btn wishlist"
+        type="button"
+        aria-label="Wishlist">
+
+        <i class="fa-regular fa-heart"></i>
+
+    </button>
+
+
+    <!-- CART -->
+    <a
+        href="cart.html"
+        class="icon-btn cart-icon"
+        aria-label="Cart">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <span id="cartCount">0</span>
+
+    </a>
+
+
+    <!-- MOBILE MENU -->
+    <button
+        class="mobile-toggle icon-btn"
+        id="mobileToggle"
+        type="button"
+        aria-label="Open menu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
 
 </div>
 </header>
-<nav class="menu-bar">
 
-    <a href="#">Home</a>
-
+<nav class="menu-bar" id="menuBar">
+    <a href="index.html" class="active">Home</a>
     <a href="#productsSection">Products</a>
-
-    <a href="myorders.html">Orders</a>
-
+    <a href="myOrders.html">Orders</a>
     <a href="#about">About</a>
-
     <a href="#footer">Contact</a>
-
 </nav>
 
-<section class="hero">
+<main>
+    <!-- Dynamic product hero: images come directly from selected products in Admin -->
+    <section class="hero" id="heroSection" aria-label="Featured products">
+        <div id="heroSlider" class="hero-slider">
+            <div class="hero-loading">Loading featured products...</div>
+        </div>
+    </section>
 
-<div class="slide active">
+    <section class="category-section" id="categoriesSection">
+        <div class="section-heading">
+            <span class="eyebrow">EXPLORE</span>
+            <h2>Shop By Category</h2>
+            <p>Find what you need faster.</p>
+        </div>
+        <div id="categories" class="categories"></div>
+    </section>
 
-<img src="images/banner1.jpg">
+    <section class="products-section" id="productsSection">
+        <div class="section-heading left-heading">
+            <span class="eyebrow">OUR COLLECTION</span>
+            <h2>Featured Products</h2>
+            <p>Fresh products, updated directly from your store.</p>
+        </div>
 
-<div class="hero-text">
-
-<h1>Latest Collection</h1>
-
-<p>Up To 60% OFF</p>
-
-<button>Shop Now</button>
-
-</div>
-
-</div>
-
-<div class="slide">
-
-<img src="images/banner2.jpg">
-
-<div class="hero-text">
-
-<h1>New Fashion</h1>
-
-<p>Trending Products</p>
-
-<button>Explore</button>
-
-</div>
-
-</div>
-
-<div class="slide">
-
-<img src="images/banner3.jpg">
-
-<div class="hero-text">
-
-<h1>Gaming Laptop</h1>
-
-<p>Best Deals</p>
-
-<button>Buy Now</button>
-
-</div>
-
-</div>
-
-</section>
-<!-- HERO SLIDER START -->
-
-<section class="hero">
-
-    <div class="slider">
-
-        <div class="slide active">
-
-            <img src="images/banner1.jpg">
-
-            <div class="overlay">
-
-                <h1>UP TO 70% OFF</h1>
-
-                <p>Latest Electronics Collection</p>
-
-                <button onclick="location.href='#productsSection'">
-                    Shop Now
-                </button>
-
+        <div class="filters" aria-label="Product filters">
+            <div class="filter-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchSecondary" placeholder="Search products...">
             </div>
-
+            <select id="categoryFilter" title="Filter by category">
+                <option value="">All Categories</option>
+            </select>
+            <input type="number" id="minPrice" placeholder="Min ₹" min="0">
+            <input type="number" id="maxPrice" placeholder="Max ₹" min="0">
+            <select id="sortBy" title="Sort products">
+                <option value="">Sort By</option>
+                <option value="low">Price: Low → High</option>
+                <option value="high">Price: High → Low</option>
+                <option value="new">Newest First</option>
+            </select>
+            <button id="clearFilters" class="clear-filter" type="button">
+                <i class="fa-solid fa-rotate-left"></i> Clear
+            </button>
         </div>
 
-        <div class="slide">
+        <div id="resultCount" class="result-count"></div>
+        <div id="products" class="products-grid"></div>
+    </section>
 
-            <img src="images/banner2.jpg">
+    <section class="offer">
+        <div>
+            <span><i class="fa-solid fa-bolt"></i> LIMITED TIME OFFER</span>
+            <h2>Big Deals. Better Prices.</h2>
+            <p>Don't miss the products currently available in ShopSphere.</p>
+        </div>
+        <button type="button" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
+            Shop Now <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </section>
 
-            <div class="overlay">
-
-                <h1>NEW FASHION ARRIVALS</h1>
-
-                <p>Premium Fashion Collection</p>
-
-                <button onclick="location.href='#productsSection'">
-                    Explore
-                </button>
-
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <span class="eyebrow">ABOUT US</span>
+            <h2>Shopping made simple with ShopSphere.</h2>
+            <p>ShopSphere is an online shopping platform where you can discover products, add them to your cart and place orders easily.</p>
+            <div class="about-points">
+                <div><i class="fa-solid fa-shield-halved"></i><span>Secure shopping experience</span></div>
+                <div><i class="fa-solid fa-truck-fast"></i><span>Easy order tracking</span></div>
+                <div><i class="fa-solid fa-headset"></i><span>Customer focused service</span></div>
             </div>
-
         </div>
+    </section>
+</main>
 
-        <div class="slide">
-
-            <img src="images/banner3.jpg">
-
-            <div class="overlay">
-
-                <h1>LIMITED SHOES SALE</h1>
-
-                <p>Grab Before Stock Ends</p>
-
-                <button onclick="location.href='#productsSection'">
-                    Buy Now
-                </button>
-
-            </div>
-
-        </div>
-
-        <button class="prev">&#10094;</button>
-
-        <button class="next">&#10095;</button>
-
-        <div class="dots">
-
-            <span class="dot active"></span>
-
-            <span class="dot"></span>
-
-            <span class="dot"></span>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- HERO SLIDER END -->
-
-<!-- Categories -->
-
-<section class="category-section">
-
-<h2>Shop By Category</h2>
-
-<div class="categories">
-
-<div class="category-card">
-<i class="fa-solid fa-mobile-screen-button"></i>
-<h3>Mobiles</h3>
-</div>
-
-<div class="category-card">
-<i class="fa-solid fa-laptop"></i>
-<h3>Laptops</h3>
-</div>
-
-<div class="category-card">
-<i class="fa-solid fa-shirt"></i>
-<h3>Fashion</h3>
-</div>
-
-<div class="category-card">
-<i class="fa-solid fa-shoe-prints"></i>
-<h3>Shoes</h3>
-</div>
-
-<div class="category-card">
-<i class="fa-regular fa-clock"></i>
-<h3>Watches</h3>
-</div>
-
-<div class="category-card">
-<i class="fa-solid fa-headphones"></i>
-<h3>Accessories</h3>
-</div>
-
-</div>
-
-</section>
-
-<section class="filter-section">
-
-    <select id="categoryFilter" title="Filter by category">
-        <option value="All">All Categories</option>
-        <option value="Mobile">Mobile</option>
-        <option value="Laptop">Laptop</option>
-        <option value="Shoes">Shoes</option>
-        <option value="Fashion">Fashion</option>
-        <option value="Accessories">Accessories</option>
-    </select>
-
-</section>
-<div class="filters">
-
-    <input
-        type="text"
-        id="search"
-        placeholder="Search Product">
-
-    <select id="categoryFilterSecondary" title="Filter by category">
-        <option value="">All Categories</option>
-    </select>
-
-    <input
-        type="number"
-        id="minPrice"
-        placeholder="Min Price">
-
-    <input
-        type="number"
-        id="maxPrice"
-        placeholder="Max Price">
-
-    <select id="sortBy">
-
-        <option value="">Sort By</option>
-
-        <option value="low">Price Low → High</option>
-
-        <option value="high">Price High → Low</option>
-
-        <option value="new">Newest</option>
-
-    </select>
-
-</div>
-<section id="productsSection">
-
-<h2 class="section-title">
-
-Featured Products
-
-</h2>
-<div id="products"></div>
-</section>
-<section class="offer">
-
-<h2>
-
-⏰ Limited Time Offer
-
-</h2>
-
-<h1>
-
-Up To 70% OFF
-
-</h1>
-
-<button onclick="location.href='#productsSection'">
-
-Shop Now
-
-</button>
-
-</section>
-<section id="about">
-
-<h2>
-
-About ShopSphere
-
-</h2>
-
-<p>
-
-ShopSphere is an online shopping platform providing quality products with secure payments and fast delivery.
-
-</p>
-
-</section>
 <footer id="footer">
-
-<h2>
-
-ShopSphere
-
-</h2>
-
-<p>
-
-© 2026 All Rights Reserved
-
-</p>
-
+    <div class="footer-brand"><i class="fa-solid fa-store"></i> ShopSphere</div>
+    <p>© 2026 ShopSphere. All Rights Reserved.</p>
 </footer>
 
+<button id="topBtn" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-<button id="topBtn">
-
-↑
-
-</button>
-
-<script src="js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/slide.js"></script>
+<script src="js/app.js"></script>
 <script src="js/navbar.js"></script>
 </body>
-
 </html>

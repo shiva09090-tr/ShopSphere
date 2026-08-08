@@ -1,302 +1,144 @@
 const API = "https://shopsphere-sedh.onrender.com/api/products";
-
 const form = document.getElementById("productForm");
 const productList = document.getElementById("productList");
-
-let editId = null;
 const submitBtn = document.getElementById("submitBtn");
-// Check Admin Login
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const imageInput = document.getElementById("image");
+const preview = document.getElementById("preview");
+const featuredInput = document.getElementById("featured");
+let editId = null;
 
 if (localStorage.getItem("admin") !== "true") {
-
     alert("Please login first.");
-
     window.location.href = "adminLogin.html";
-
 }
 
-// Load Products
 async function loadProducts() {
+    try {
+        const res = await fetch(API);
+        const result = await res.json();
+        productList.innerHTML = "";
 
-    const res = await fetch(API);
-
-    const result = await res.json();
-
-    productList.innerHTML = "";
-
-    result.data.forEach((product) => {
-        productList.innerHTML += `
-<div class="card">
-    <img src="${product.image}" width="150">
-    <h2>${product.name}</h2>
-    <p>${product.description}</p>
-    <h3>₹${product.price}</h3>
-    <button onclick="editProduct('${product._id}')">
-        Edit
-    </button>
-    <button class="deleteBtn"
-    onclick="deleteProduct('${product._id}')">
-        Delete
-    </button>
-</div>
-`;
-    });
+        result.data.forEach(product => {
+            productList.innerHTML += `
+            <div class="card product-admin-card">
+                <div class="admin-product-image"><img src="${product.image || 'https://via.placeholder.com/150?text=No+Image'}" alt="${product.name}"></div>
+                <div class="admin-product-info">
+                    <span class="admin-category">${product.category || 'Product'}</span>
+                    <h2>${product.name}</h2>
+                    <p>${product.description}</p>
+                    <h3>₹${Number(product.price).toLocaleString('en-IN')}</h3>
+                    <p>Stock: ${product.stock}</p>
+                    <p class="featured-status">${product.featured ? '⭐ Showing in Home Slider' : '○ Not in Home Slider'}</p>
+                    <div class="admin-product-actions">
+                        <button type="button" onclick="editProduct('${product._id}')">Edit</button>
+                        <button type="button" class="deleteBtn" onclick="deleteProduct('${product._id}')">Delete</button>
+                    </div>
+                </div>
+            </div>`;
+        });
+    } catch (error) {
+        console.error(error);
+        productList.innerHTML = "<p>Unable to load products.</p>";
+    }
 }
 
-// Add Product
-form.addEventListener("submit", async (e) => {
-
+form.addEventListener("submit", async e => {
     e.preventDefault();
-
     const formData = new FormData();
+    formData.append("name", document.getElementById("name").value.trim());
+    formData.append("description", document.getElementById("description").value.trim());
+    formData.append("price", document.getElementById("price").value);
+    formData.append("category", document.getElementById("category").value.trim());
+    formData.append("brand", document.getElementById("brand").value.trim());
+    formData.append("stock", document.getElementById("stock").value);
+    formData.append("featured", featuredInput.checked ? "true" : "false");
 
-formData.append("name", document.getElementById("name").value);
-formData.append("description", document.getElementById("description").value);
-formData.append("price", document.getElementById("price").value);
-formData.append("category", document.getElementById("category").value);
-formData.append("brand", document.getElementById("brand").value);
-formData.append("stock", document.getElementById("stock").value);
-
-const imageFile = document.getElementById("image").files[0];
-
-if(imageFile){
-
-    formData.append("image", imageFile);
-
-}
-
-    if (editId) {
-
-        await fetch(API + "/" + editId, {
-
-    method: "PUT",
-
-    body: formData
-
-});
-
-        editId = null;
-        submitBtn.innerText = "Add Product";
-
-    } else {
-
-        await fetch(API, {
-
-            method: "POST",
-
-            body: formData
-
-        });
-
-        Swal.fire({
-            icon: "success",
-            title: "Product Added Successfully",
-            timer: 1500,
-            showConfirmButton: false
-        });
-
-    }
-
-    form.reset();
-
-    loadProducts();
-
-});
-
-// Delete Product
-async function deleteProduct(id){
-
-    await fetch(API + "/" + id, {
-
-        method: "DELETE"
-
-    });
-
-    loadProducts();
-
-}
-async function editProduct(id) {
-
-    const res = await fetch(API + "/" + id);
-    const result = await res.json();
-
-    const product = result.data;
-
-    document.getElementById("name").value = product.name;
-    document.getElementById("description").value = product.description;
-    document.getElementById("price").value = product.price;
-    document.getElementById("category").value = product.category;
-    document.getElementById("brand").value = product.brand;
-    document.getElementById("stock").value = product.stock;
-    document.getElementById("image").value = product.image;
-    preview.src = product.image;
-    preview.style.display = "block";
-
-    editId = id;
-
-    submitBtn.innerText = "Update Product";
-}
-
-loadProducts();
-const imageInput = document.getElementById("image");
-
-const preview = document.getElementById("preview");
-
-imageInput.addEventListener("change",()=>{
-
-    const file = imageInput.files[0];
-
-    if(file){
-
-        preview.src = URL.createObjectURL(file);
-
-        preview.style.display = "block";
-
-    }else{
-
-        preview.style.display = "none";
-
-    }
-
-});
-const logoutBtn = document.getElementById("logoutBtn");
-
-logoutBtn.addEventListener("click", () => {
-
-    localStorage.removeItem("admin");
-
-    logoutBtn.addEventListener("click",()=>{
-
-    localStorage.removeItem("admin");
-
-    Swal.fire({
-        icon:"success",
-        title:"Logged Out",
-        timer:1200,
-        showConfirmButton:false
-    });
-
-    setTimeout(()=>{
-        window.location.href="adminLogin.html";
-    },1200);
-
-});
-
-    window.location.href = "adminLogin.html";
-
-});
-async function loadDashboardStats() {
+    if (imageInput.files[0]) formData.append("image", imageInput.files[0]);
 
     try {
+        const url = editId ? `${API}/${editId}` : API;
+        const method = editId ? "PUT" : "POST";
+        const res = await fetch(url, { method, body: formData });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || "Request failed");
 
-        const res = await fetch("https://shopsphere-sedh.onrender.com/api/dashboard-stats");
-
-        const data = await res.json();
-
-        console.log(data);
-
-        document.getElementById("products").innerText = data.totalProducts;
-
-        document.getElementById("orders").innerText = data.totalOrders;
-
-        document.getElementById("pending").innerText = data.pendingOrders;
-
-        document.getElementById("delivered").innerText = data.deliveredOrders;
-
-        document.getElementById("cancelled").innerText = data.cancelledOrders;
-
-        document.getElementById("revenue").innerText = "₹" + data.totalRevenue;
-
-    } catch (err) {
-
-        console.log(err);
-
+        await Swal.fire({ icon: "success", title: editId ? "Product Updated" : "Product Added", timer: 1300, showConfirmButton: false });
+        resetForm();
+        loadProducts();
+    } catch (error) {
+        Swal.fire({ icon: "error", title: "Error", text: error.message });
     }
+});
 
-}
+async function editProduct(id) {
+    try {
+        const res = await fetch(`${API}/${id}`);
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || "Product not found");
+        const product = result.data;
 
-loadDashboardStats();
-async function loadNotifications(){
+        document.getElementById("name").value = product.name || "";
+        document.getElementById("description").value = product.description || "";
+        document.getElementById("price").value = product.price || "";
+        document.getElementById("category").value = product.category || "";
+        document.getElementById("brand").value = product.brand || "";
+        document.getElementById("stock").value = product.stock ?? 0;
+        featuredInput.checked = Boolean(product.featured);
+        imageInput.value = "";
 
-    const res = await fetch(
-        "https://shopsphere-sedh.onrender.com/api/admin/orders"
-    );
-
-    const result = await res.json();
-
-    const pending = result.data.filter(order=>
-        order.status==="Pending"
-    );
-
-    document.getElementById("newOrders").innerText =
-        pending.length;
-
-}
-
-loadNotifications();
-
-setInterval(loadNotifications,5000);
-async function loadRecentOrders(){
-
-    const res = await fetch("https://shopsphere-sedh.onrender.com/api/admin/orders");
-
-    const result = await res.json();
-
-    const tbody = document.getElementById("recentOrdersBody");
-
-    if(!tbody) return;
-
-    tbody.innerHTML = "";
-
-    result.data.slice(0,5).forEach(order=>{
-
-        tbody.innerHTML += `
-        <tr>
-            <td>${order.customerName}</td>
-            <td>${order.phone}</td>
-            <td>${order.status}</td>
-            <td>₹${order.totalPrice}</td>
-            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
-        </tr>
-        `;
-
-    });
-
-}
-
-loadRecentOrders();
-async function loadLowStock(){
-
-    const res = await fetch("https://shopsphere-sedh.onrender.com/api/products");
-
-    const result = await res.json();
-
-    const box = document.getElementById("lowStockList");
-
-    if(!box) return;
-
-    box.innerHTML="";
-
-    result.data.forEach(product=>{
-
-        if(product.stock<=5){
-
-            box.innerHTML+=`
-
-            <div class="lowItem">
-
-                <span>${product.name}</span>
-
-                <b>${product.stock} Left</b>
-
-            </div>
-
-            `;
-
+        if (product.image) {
+            preview.src = product.image;
+            preview.style.display = "block";
+        } else {
+            preview.style.display = "none";
         }
 
-    });
-
+        editId = id;
+        submitBtn.innerText = "Update Product";
+        cancelEditBtn.style.display = "inline-block";
+        document.getElementById("productFormTitle").innerText = "Update Product";
+        window.scrollTo({ top: document.getElementById("productForm").offsetTop - 20, behavior: "smooth" });
+    } catch (error) {
+        Swal.fire({ icon: "error", title: "Error", text: error.message });
+    }
 }
+window.editProduct = editProduct;
 
-loadLowStock();
+async function deleteProduct(id) {
+    const confirm = await Swal.fire({ title: "Delete Product?", text: "This cannot be undone.", icon: "warning", showCancelButton: true, confirmButtonText: "Delete" });
+    if (!confirm.isConfirmed) return;
+    try {
+        const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error("Delete failed");
+        loadProducts();
+    } catch (error) {
+        Swal.fire({ icon: "error", title: "Error", text: error.message });
+    }
+}
+window.deleteProduct = deleteProduct;
+
+function resetForm() {
+    form.reset();
+    editId = null;
+    submitBtn.innerText = "Add Product";
+    cancelEditBtn.style.display = "none";
+    document.getElementById("productFormTitle").innerText = "Add / Update Product";
+    preview.src = "";
+    preview.style.display = "none";
+}
+cancelEditBtn?.addEventListener("click", resetForm);
+
+imageInput?.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+});
+
+document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+    localStorage.removeItem("admin");
+    window.location.href = "adminLogin.html";
+});
+
+loadProducts();

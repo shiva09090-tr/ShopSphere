@@ -17,7 +17,8 @@ const addProduct = async (req, res) => {
             category: req.body.category,
             brand: req.body.brand,
             stock: req.body.stock,
-            image: image
+            image: image,
+            featured: req.body.featured === "true" || req.body.featured === true
 
         });
 
@@ -97,11 +98,12 @@ const updateProduct = async (req, res) => {
       });
     }
     if(req.file){
+        req.body.image = `https://shopsphere-sedh.onrender.com/uploads/${req.file.filename}`;
+    }
 
-    req.body.image =
-    `https://shopsphere-sedh.onrender.com/uploads/${req.file.filename}`;
-
-}
+    if (req.body.featured !== undefined) {
+        req.body.featured = req.body.featured === "true" || req.body.featured === true;
+    }
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,

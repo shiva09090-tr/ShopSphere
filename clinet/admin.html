@@ -3,166 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
-
+<title>ShopSphere Admin Panel</title>
 <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-<button id="logoutBtn">
-
-Logout
-
-</button>
+<div class="admin-topbar">
+    <div><i class="fa-solid fa-store"></i> <strong>ShopSphere Admin</strong></div>
+    <button id="logoutBtn" type="button">Logout</button>
+</div>
 <div class="container">
-
 <h1>ShopSphere Admin Panel</h1>
-<div id="notificationBox" class="notification">
-    🔔 New Orders :
-    <span id="newOrders">0</span>
-</div>
-<div class="card" onclick="location.href='#productForm'">
-    <h2 id="products">0</h2>
-    <p>Products</p>
-</div>
+<div id="notificationBox" class="notification">🔔 New Orders : <span id="newOrders">0</span></div>
 
-<div class="card" onclick="location.href='adminOrders.html'">
-    <h2 id="orders">0</h2>
-    <p>Orders</p>
+<div class="dashboardCards">
+    <div class="card" onclick="location.href='#productForm'"><h2 id="products">0</h2><p>Products</p></div>
+    <div class="card" onclick="location.href='adminOrders.html'"><h2 id="orders">0</h2><p>Orders</p></div>
+    <div class="card" onclick="location.href='adminOrders.html?status=Pending'"><h2 id="pending">0</h2><p>Pending</p></div>
+    <div class="card" onclick="location.href='adminOrders.html?status=Delivered'"><h2 id="delivered">0</h2><p>Delivered</p></div>
+    <div class="card" onclick="location.href='adminOrders.html?status=Cancelled'"><h2 id="cancelled">0</h2><p>Cancelled</p></div>
+    <div class="card" onclick="location.href='adminOrders.html'"><h2 id="revenue">₹0</h2><p>Revenue</p></div>
 </div>
 
-<div class="card" onclick="location.href='adminOrders.html?status=Pending'">
-    <h2 id="pending">0</h2>
-    <p>Pending</p>
-</div>
-
-<div class="card" onclick="location.href='adminOrders.html?status=Delivered'">
-    <h2 id="delivered">0</h2>
-    <p>Delivered</p>
-</div>
-
-<div class="card" onclick="location.href='adminOrders.html?status=Cancelled'">
-    <h2 id="cancelled">0</h2>
-    <p>Cancelled</p>
-</div>
-
-<div class="card" onclick="location.href='adminOrders.html'">
-    <h2 id="revenue">₹0</h2>
-    <p>Revenue</p>
-</div>
-<div class="lowStockBox">
-
-    <h2>⚠ Low Stock Products</h2>
-
-    <div id="lowStockList">
-
-    </div>
-
-</div>
+<div class="lowStockBox"><h2>⚠ Low Stock Products</h2><div id="lowStockList"></div></div>
 <h2>📦 Recent Orders</h2>
+<table id="recentOrdersTable"><thead><tr><th>Customer</th><th>Phone</th><th>Status</th><th>Total</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table>
 
-<table id="recentOrdersTable">
+<div class="chartBox"><h2>Monthly Sales</h2><canvas id="salesChart"></canvas></div>
 
-    <thead>
-
-        <tr>
-
-            <th>Customer</th>
-            <th>Phone</th>
-            <th>Status</th>
-            <th>Total</th>
-            <th>Date</th>
-
-        </tr>
-
-    </thead>
-
-    <tbody id="recentOrdersBody">
-
-    </tbody>
-
-</table>
-<div class="chartBox">
-
-    <h2>Monthly Sales</h2>
-
-    <canvas id="salesChart"></canvas>
-
-</div>
+<h2 id="productFormTitle">Add / Update Product</h2>
 <form id="productForm">
-
-<label for="name">Product Name</label>
-<input
- type="text"
- id="name"
- placeholder="Product Name"
- required>
-
-<label for="description">Description</label>
-<textarea
- id="description"
- placeholder="Description"
- required></textarea>
-
-<label for="price">Price</label>
-<input
- type="number"
- id="price"
- placeholder="Price"
- required>
-
-<label for="category">Category</label>
-<input
- type="text"
- id="category"
- placeholder="Category"
- required>
-
-<label for="brand">Brand</label>
-<input
- type="text"
- id="brand"
- placeholder="Brand"
- required>
-
-<label for="stock">Stock</label>
-<input
- type="number"
- id="stock"
- placeholder="Stock"
- required>
-
-<label for="image">Product Image</label>
-<input
- type="file"
- id="image"
- accept="image/*">
-
+<label for="name">Product Name</label><input type="text" id="name" placeholder="Product Name" required>
+<label for="description">Description</label><textarea id="description" placeholder="Description" required></textarea>
+<label for="price">Price</label><input type="number" id="price" placeholder="Price" min="0" required>
+<label for="category">Category</label><input type="text" id="category" placeholder="Example: Mobile, Shoes, Fashion" required>
+<label for="brand">Brand</label><input type="text" id="brand" placeholder="Brand" required>
+<label for="stock">Stock</label><input type="number" id="stock" placeholder="Stock" min="0" required>
+<label for="image">Product Image</label><input type="file" id="image" accept="image/*">
+<div class="featured-option"><input type="checkbox" id="featured"><div><strong>Show this product in Home Hero Slider</strong><small>Select this for products you want to promote on the homepage. If nothing is selected, the latest 3 products appear automatically.</small></div></div>
 <img id="preview" src="" alt="Preview" class="preview-image">
-
-<button type="submit" id="submitBtn">
-    Add Product
-</button>
-<a href="adminOrders.html">
-
-    <button>
-
-        📦 View Orders
-
-    </button>
-
-</a>
-
+<div class="form-actions"><button type="submit" id="submitBtn">Add Product</button><button type="button" id="cancelEditBtn" class="secondary" style="display:none;">Cancel Edit</button></div>
+<a class="orders-link" href="adminOrders.html">📦 View Orders</a>
 </form>
 
-<h2>All Products</h2>
-
-<div id="productList"></div>
-
+<h2>All Products</h2><div id="productList"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/adminDashboard.js"></script>
 <script src="js/admin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
 </html>
