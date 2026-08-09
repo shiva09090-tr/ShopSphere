@@ -13,6 +13,7 @@ const heroSlider = document.getElementById("heroSlider");
 const resultCount = document.getElementById("resultCount");
 const clearFilters = document.getElementById("clearFilters");
 
+
 let allProducts = [];
 let heroProducts = [];
 let filteredProducts = [];
@@ -33,71 +34,43 @@ function getImage(product) {
 }
 
 async function loadProducts() {
-
     try {
+        const response = await fetch(API_URL);
 
-        const response = await fetch(
-            "https://shopsphere-sedh.onrender.com/api/products"
-        );
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
 
         const result = await response.json();
 
+        console.log("API Response:", result);
+
         allProducts = result.data || [];
+
+        console.log("Products Loaded:", allProducts);
 
         filteredProducts = [...allProducts];
 
-        function createCategories() {
-
-    if (!categoryFilter) return;
-
-    const categories = [
-        ...new Set(
-            allProducts
-                .map(product =>
-                    product.category?.trim()
-                )
-                .filter(Boolean)
-        )
-    ];
-
-    categoryFilter.innerHTML = `
-        <option value="">
-            All Categories
-        </option>
-    `;
-
-    categories.forEach(category => {
-
-        categoryFilter.innerHTML += `
-            <option value="${category}">
-                ${category}
-            </option>
-        `;
-
-    });
-
-}
-
-
-        function applyFilters() {
-
-            let products = [...allProducts];
-
-            // (filtering logic goes here)
-
-        }
+        // Render everything
+        loadCategories();
+        renderCategories();
+        renderHero();
+        filterProducts();
 
     } catch (error) {
+        console.error("Product loading error:", error);
 
-        console.error(
-            "Product loading error:",
-            error
-        );
-
+        if (productsDiv) {
+            productsDiv.innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <h3>Products Load Nahi Ho Rahe</h3>
+                    <p>Please try again later.</p>
+                </div>
+            `;
+        }
     }
-
 }
-
 
 
 function uniqueCategories() {
