@@ -8,6 +8,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const adminApi = require("./routes/adminApi");
 const dashboardStats = require("./routes/dashboardStats");
+const couponRoutes = require("./routes/couponRoutes");
 dotenv.config();
 
 connectDB();
@@ -24,6 +25,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders",orderRoutes);
 app.use("/api/dashboard-stats", dashboardStats);
 app.use("/api/admin", adminApi);
+app.use(
+    "/api/coupons",
+    couponRoutes
+);
 app.get("/", (req, res) => {
     res.send("Welcome to ShopSphere API 🚀");
 });

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Coupon Management - ShopSphere</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎟️ Coupon Management</h1>
+
+
+    <!-- COUPON FORM -->
+
+    <div class="coupon-admin-box">
+
+        <h2 id="couponTitle">
+            Create Coupon
+        </h2>
+
+
+        <form id="couponForm">
+
+
+            <label>
+                Coupon Code
+            </label>
+
+            <input
+                type="text"
+                id="couponCode"
+                placeholder="Example: WELCOME10"
+                required
+            >
+
+
+            <label>
+                Discount Type
+            </label>
+
+            <select
+                id="discountType"
+                required
+            >
+
+                <option value="percentage">
+                    Percentage (%)
+                </option>
+
+                <option value="fixed">
+                    Fixed Amount (₹)
+                </option>
+
+            </select>
+
+
+            <label>
+                Discount Value
+            </label>
+
+            <input
+                type="number"
+                id="discountValue"
+                min="1"
+                placeholder="10"
+                required
+            >
+
+
+            <label>
+                Minimum Order Value
+            </label>
+
+            <input
+                type="number"
+                id="minimumOrder"
+                min="0"
+                placeholder="500"
+            >
+
+
+            <label>
+                Usage Limit
+            </label>
+
+            <input
+                type="number"
+                id="usageLimit"
+                min="1"
+                value="10"
+                required
+            >
+
+
+            <label>
+                Expiry Date
+            </label>
+
+            <input
+                type="datetime-local"
+                id="expiryDate"
+                required
+            >
+
+
+            <label class="coupon-active">
+
+                <input
+                    type="checkbox"
+                    id="active"
+                    checked
+                >
+
+                Coupon Active
+
+            </label>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    id="couponSubmit"
+                >
+                    Create Coupon
+                </button>
+
+
+                <button
+                    type="button"
+                    id="cancelCouponEdit"
+                    style="display:none;"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- COUPONS -->
+
+    <h2>All Coupons</h2>
+
+    <div id="couponList"></div>
+
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+</script>
+
+<script src="js/adminCoupons.js"></script>
+
+</body>
+
+</html>

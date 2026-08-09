@@ -2,79 +2,118 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>Order Summary - ShopSphere</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Order Summary</title>
-
-<link rel="stylesheet" href="css/summary.css">
-
+    <link rel="stylesheet" href="css/summary.css">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="summary-container">
 
-<h1>Order Summary</h1>
+        <h1>Order Summary</h1>
 
-<div id="customerDetails"></div>
+        <!-- CUSTOMER -->
+        <section class="summary-section">
 
-<hr>
+            <h2>👤 Customer Details</h2>
 
-<h2>Products</h2>
+            <div id="customerDetails">
+                <!-- JS will insert customer details -->
+            </div>
 
-<div id="productList"></div>
+        </section>
 
-<hr>
-<div class="couponBox">
 
-    <input
-    type="text"
-    id="couponCode"
-    placeholder="Enter Coupon Code">
+        <!-- PRODUCTS -->
+        <section class="summary-section">
 
-    <button id="applyCoupon">
+            <h2>📦 Products</h2>
 
-        Apply
+            <div id="productList">
+                <!-- JS will insert products -->
+            </div>
 
-    </button>
+        </section>
 
-</div>
 
-<p>
+        <!-- COUPON -->
+        <section class="coupon-section">
 
-Discount :
+            <h2>🎟️ Apply Coupon</h2>
 
-₹<span id="discount">0</span>
+            <div class="coupon-input">
 
-</p>
+                <input
+                    type="text"
+                    id="couponCode"
+                    placeholder="Enter Coupon Code"
+                    autocomplete="off"
+                >
 
-<h2>
+                <button
+                    type="button"
+                    id="applyCoupon"
+                >
+                    Apply Coupon
+                </button>
 
-Grand Total :
+            </div>
 
-₹<span id="grandTotal"></span>
+        </section>
 
-</h2>
-<h2>
 
-Grand Total :
-₹ <span id="grandTotal">0</span>
+        <!-- PRICE -->
+        <section class="price-summary">
 
-</h2>
+            <div class="summary-row">
 
-<button id="confirmBtn">
+                <span>Discount:</span>
 
-Confirm Order
+                <strong>
+                    ₹<span id="discount">0</span>
+                </strong>
 
-</button>
+            </div>
 
-</div>
 
-<script src="js/summary.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <div class="summary-row grand-total-row">
+
+                <span>Grand Total:</span>
+
+                <strong>
+                    ₹<span id="grandTotal">0</span>
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONFIRM -->
+        <button
+            type="button"
+            id="confirmBtn"
+            class="confirm-order-btn"
+        >
+            Confirm Order
+        </button>
+
+    </div>
+
+
+    <!-- SweetAlert FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    console.log("SUMMARY HTML LOADED");
+</script>
+
+    <!-- YOUR JS LAST -->
+    <script src="js/summary.js"></script>
+
 </body>
 
 </html>

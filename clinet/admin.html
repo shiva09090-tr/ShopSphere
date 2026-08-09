@@ -38,13 +38,18 @@
 <label for="category">Category</label><input type="text" id="category" placeholder="Example: Mobile, Shoes, Fashion" required>
 <label for="brand">Brand</label><input type="text" id="brand" placeholder="Brand" required>
 <label for="stock">Stock</label><input type="number" id="stock" placeholder="Stock" min="0" required>
-<label for="image">Product Image</label><input type="file" id="image" accept="image/*">
+<label for="image">Product Image</label><input type="file" id="image" accept="image/*" title="Choose a product image">
 <div class="featured-option"><input type="checkbox" id="featured"><div><strong>Show this product in Home Hero Slider</strong><small>Select this for products you want to promote on the homepage. If nothing is selected, the latest 3 products appear automatically.</small></div></div>
 <img id="preview" src="" alt="Preview" class="preview-image">
 <div class="form-actions"><button type="submit" id="submitBtn">Add Product</button><button type="button" id="cancelEditBtn" class="secondary" style="display:none;">Cancel Edit</button></div>
 <a class="orders-link" href="adminOrders.html">📦 View Orders</a>
 </form>
-
+<a
+    class="orders-link"
+    href="adminCoupons.html"
+>
+    🎟️ Manage Coupons
+</a>
 <h2>All Products</h2><div id="productList"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -54,5 +59,6 @@
 <script src="js/adminDashboard.js"></script>
 
 <script src="js/admin.js"></script>
+<script src="js/couponAdmin.js"></script>
 </body>
 </html>

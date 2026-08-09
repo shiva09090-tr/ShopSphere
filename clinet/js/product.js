@@ -21,18 +21,32 @@ if (product.stock > 0) {
 
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        const existing = cart.find(item => item._id === product._id);
+const existingProduct = cart.find(
+    item => item._id === product._id
+);
 
-        if (existing) {
-            existing.quantity++;
-        } else {
-            cart.push({
-                ...product,
-                quantity: 1
-            });
-        }
+if (existingProduct) {
 
-        localStorage.setItem("cart", JSON.stringify(cart));
+    existingProduct.quantity =
+        (Number(existingProduct.quantity) || 1) + 1;
+
+} else {
+
+    cart.push({
+        _id: product._id,
+        name: product.name,
+        description: product.description || "",
+        price: Number(product.price) || 0,
+        category: product.category || "",
+        brand: product.brand || "",
+        image: product.image || "",
+        featured: product.featured || false,
+        quantity: 1
+    });
+
+}
+
+localStorage.setItem("cart", JSON.stringify(cart));
 
         Swal.fire({
             icon: "success",

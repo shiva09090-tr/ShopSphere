@@ -4,117 +4,355 @@ const cartItems = document.getElementById("cartItems");
 const totalPrice = document.getElementById("totalPrice");
 const clearCart = document.getElementById("clearCart");
 
-function renderCart(){
+// ======================================================
+// RENDER CART
+// ======================================================
 
-    cartItems.innerHTML="";
+function renderCart() {
 
-    let total=0;
+    cartItems.innerHTML = "";
 
-    cart.forEach((product,index)=>{
+    let total = 0;
 
-        total += product.price;
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                <h2>Your Cart is Empty</h2>
+                <p>Add some products to continue shopping.</p>
+            </div>
+        `;
+
+        totalPrice.textContent = "₹0";
+        return;
+    }
+
+
+    cart.forEach((product, index) => {
+
+        const quantity =
+            Number(product.quantity) || 1;
+
+        const price =
+            Number(product.price) || 0;
+
+        const subtotal =
+            price * quantity;
+
+        total += subtotal;
+
 
         cartItems.innerHTML += `
 
-        <div class="cart-card">
+            <div class="cart-card">
 
-            <img src="https://picsum.photos/300/200?random=${product._id}">
+                <img
+                    src="${product.image || 'https://via.placeholder.com/200?text=No+Image'}"
+                    alt="${product.name || 'Product'}"
+                    class="cart-product-image"
+                >
 
-            <div class="info">
+                <div class="info">
 
-                <h2>${product.name}</h2>
+                    <h2>
+                        ${product.name || "Product"}
+                    </h2>
 
-                <p>${product.description}</p>
+                    <p>
+                        ${product.description || ""}
+                    </p>
 
-                <h3 class="price">₹${product.price}</h3>
+                    <h3 class="price">
+                        ₹${price.toLocaleString("en-IN")}
+                    </h3>
 
-                <div class="quantity">
 
-                    <button onclick="decrease(${index})">-</button>
+                    <div class="quantity">
 
-                    <span>1</span>
+                        <button
+                            type="button"
+                            onclick="decrease(${index})"
+                        >
+                            -
+                        </button>
 
-                    <button onclick="increase(${index})">+</button>
+
+                        <span>
+                            ${quantity}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            onclick="increase(${index})"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <p class="subtotal">
+                        Subtotal:
+                        <strong>
+                            ₹${subtotal.toLocaleString("en-IN")}
+                        </strong>
+                    </p>
 
                 </div>
 
+
+                <button
+                    type="button"
+                    class="remove"
+                    onclick="removeItem(${index})"
+                >
+                    Remove
+                </button>
+
             </div>
-
-            <button class="remove" onclick="removeItem(${index})">
-
-                Remove
-
-            </button>
-
-        </div>
 
         `;
 
     });
 
-    totalPrice.textContent = total;
 
+    totalPrice.textContent =
+        `₹${total.toLocaleString("en-IN")}`;
 }
 
-function removeItem(index){
 
-    cart.splice(index,1);
+// ======================================================
+// REMOVE PRODUCT
+// ======================================================
 
-    localStorage.setItem("cart",JSON.stringify(cart));
+function removeItem(index) {
+
+    cart.splice(index, 1);
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
 
     renderCart();
 
 }
 
-function increase(index){
 
-    cart.push(cart[index]);
+// ======================================================
+// INCREASE QUANTITY
+// ======================================================
 
-    localStorage.setItem("cart",JSON.stringify(cart));
+function increase(index) {
 
-    renderCart();
+    if (!cart[index]) return;
 
-}
 
-function decrease(index){
+    const currentQuantity =
+        Number(cart[index].quantity) || 1;
 
-    cart.splice(index,1);
 
-    localStorage.setItem("cart",JSON.stringify(cart));
+    cart[index].quantity =
+        currentQuantity + 1;
 
-    renderCart();
 
-}
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
 
-clearCart.onclick=()=>{
-
-    cart=[];
-
-    localStorage.removeItem("cart");
 
     renderCart();
 
 }
 
-renderCart();
-const buyNowBtn = document.getElementById("buyNowBtn");
 
-buyNowBtn.addEventListener("click", () => {
+// ======================================================
+// DECREASE QUANTITY
+// ======================================================
 
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+function decrease(index) {
 
-    if(cart.length === 0){
+    if (!cart[index]) return;
 
-        Swal.fire({
-    icon:"info",
-    title:"Cart Empty",
-    text:"Please add products first."
-});
 
-        return;
+    const currentQuantity =
+        Number(cart[index].quantity) || 1;
+
+
+    // If quantity is 1, remove product
+
+    if (currentQuantity <= 1) {
+
+        cart.splice(index, 1);
+
+    } else {
+
+        cart[index].quantity =
+            currentQuantity - 1;
 
     }
 
-    window.location.href = "checkout.html";
 
-});
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    renderCart();
+
+}
+
+
+// ======================================================
+// CLEAR CART
+// ======================================================
+
+if (clearCart) {
+
+    clearCart.onclick = () => {
+
+        if (cart.length === 0) {
+            return;
+        }
+
+
+        Swal.fire({
+
+            icon: "warning",
+
+            title: "Clear Cart?",
+
+            text: "All products will be removed from your cart.",
+
+            showCancelButton: true,
+
+            confirmButtonText: "Yes, Clear Cart",
+
+            cancelButtonText: "Cancel"
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                cart = [];
+
+                localStorage.removeItem("cart");
+
+                renderCart();
+
+            }
+
+        });
+
+    };
+
+}
+
+
+// ======================================================
+// BUY NOW
+// ======================================================
+
+const buyNowBtn =
+    document.getElementById("buyNowBtn");
+
+
+if (buyNowBtn) {
+
+    buyNowBtn.addEventListener(
+        "click",
+        () => {
+
+
+            // ------------------------------------------
+            // CHECK CART
+            // ------------------------------------------
+
+            const currentCart =
+                JSON.parse(
+                    localStorage.getItem("cart")
+                ) || [];
+
+
+            if (currentCart.length === 0) {
+
+                Swal.fire({
+
+                    icon: "info",
+
+                    title: "Cart Empty",
+
+                    text:
+                        "Please add products first."
+
+                });
+
+                return;
+
+            }
+
+
+            // ------------------------------------------
+            // CHECK LOGIN
+            // ------------------------------------------
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem("user")
+                );
+
+
+            if (!user) {
+
+                Swal.fire({
+
+                    icon: "warning",
+
+                    title: "Login Required",
+
+                    text:
+                        "Please login before placing an order.",
+
+                    showCancelButton: true,
+
+                    confirmButtonText: "Login",
+
+                    cancelButtonText: "Cancel"
+
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        window.location.href =
+                            "login.html";
+
+                    }
+
+                });
+
+                return;
+
+            }
+
+
+            // ------------------------------------------
+            // GO TO CHECKOUT
+            // ------------------------------------------
+
+            window.location.href =
+                "checkout.html";
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// INITIAL LOAD
+// ======================================================
+
+renderCart();

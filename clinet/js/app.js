@@ -15,6 +15,7 @@ const clearFilters = document.getElementById("clearFilters");
 
 let allProducts = [];
 let heroProducts = [];
+let filteredProducts = [];
 let heroIndex = 0;
 let heroTimer = null;
 
@@ -32,27 +33,72 @@ function getImage(product) {
 }
 
 async function loadProducts() {
+
     try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("Unable to load products");
 
-        const result = await res.json();
-        allProducts = Array.isArray(result.data) ? result.data : [];
+        const response = await fetch(
+            "https://shopsphere-sedh.onrender.com/api/products"
+        );
 
-        loadCategories();
-        renderCategories();
-        renderHero();
-        filterProducts();
-    } catch (error) {
-        console.error("Product loading error:", error);
-        if (productsDiv) {
-            productsDiv.innerHTML = `<div class="empty-state"><i class="fa-solid fa-wifi"></i><h3>Products unavailable</h3><p>Please try again in a moment.</p></div>`;
-        }
-        if (heroSlider) {
-            heroSlider.innerHTML = `<div class="hero-loading">Featured products could not be loaded.</div>`;
-        }
-    }
+        const result = await response.json();
+
+        allProducts = result.data || [];
+
+        filteredProducts = [...allProducts];
+
+        function createCategories() {
+
+    if (!categoryFilter) return;
+
+    const categories = [
+        ...new Set(
+            allProducts
+                .map(product =>
+                    product.category?.trim()
+                )
+                .filter(Boolean)
+        )
+    ];
+
+    categoryFilter.innerHTML = `
+        <option value="">
+            All Categories
+        </option>
+    `;
+
+    categories.forEach(category => {
+
+        categoryFilter.innerHTML += `
+            <option value="${category}">
+                ${category}
+            </option>
+        `;
+
+    });
+
 }
+
+
+        function applyFilters() {
+
+            let products = [...allProducts];
+
+            // (filtering logic goes here)
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Product loading error:",
+            error
+        );
+
+    }
+
+}
+
+
 
 function uniqueCategories() {
     return [...new Set(
