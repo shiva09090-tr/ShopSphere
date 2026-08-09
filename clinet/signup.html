@@ -1,47 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Signup</title>
-<link rel="stylesheet" href="css/signup.css">
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account | ShopSphere</title>
+
+    <link rel="stylesheet" href="css/signup.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 </head>
+
+
 <body>
 
-<div class="container">
+<div class="signup-page">
 
-<h1>Create Account</h1>
 
-<form id="signupForm">
+    <!-- =========================
+         LEFT SECTION
+    ========================== -->
 
-<input type="text" id="name" placeholder="Full Name" required>
+    <div class="signup-left">
 
-<input type="email" id="email" placeholder="Email" required>
+        <!-- Brand -->
 
-<input type="password" id="password" placeholder="Password" required>
+        <div class="brand">
 
-<button type="submit">
-Sign Up
-</button>
+            <div class="brand-icon">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </div>
 
-</form>
+            <span>
+                Shop<span>Sphere</span>
+            </span>
 
-<p>
+        </div>
 
-Already have an account?
 
-<a href="login.html">
+        <!-- Welcome Content -->
 
-Login
+        <div class="welcome-content">
 
-</a>
+            <h1>
+                Join ShopSphere
+            </h1>
 
-</p>
+            <p>
+                Create your account and discover
+                amazing products at your fingertips.
+            </p>
+
+
+            <div class="features">
+
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <div>
+
+                        <strong>
+                            Easy Shopping
+                        </strong>
+
+                        <small>
+                            Shop your favourite products easily.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    <div>
+
+                        <strong>
+                            Track Your Orders
+                        </strong>
+
+                        <small>
+                            Keep track of all your purchases.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <div>
+
+                        <strong>
+                            Secure Account
+                        </strong>
+
+                        <small>
+                            Your information stays protected.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         RIGHT SECTION
+    ========================== -->
+
+    <div class="signup-right">
+
+
+        <div class="signup-card">
+
+
+            <!-- Mobile Logo -->
+
+            <div class="mobile-logo">
+
+                <div class="brand-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+
+                <span>
+                    Shop<span>Sphere</span>
+                </span>
+
+            </div>
+
+
+
+            <!-- Heading -->
+
+            <div class="signup-heading">
+
+                <h2>
+                    Create Account
+                </h2>
+
+                <p>
+                    Sign up to start shopping with ShopSphere
+                </p>
+
+            </div>
+
+
+
+            <!-- Signup Form -->
+
+            <form id="signupForm">
+
+
+                <!-- Name -->
+
+                <div class="input-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-user"></i>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Email -->
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+
+                            <i class="fa-regular fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Terms -->
+
+                <div class="terms-row">
+
+                    <label class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+
+                        <span>
+                            I agree to the
+                            <a href="#">
+                                Terms & Conditions
+                            </a>
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Signup Button -->
+
+                <button
+                    type="submit"
+                    class="signup-btn"
+                >
+
+                    <span>
+                        Create Account
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- Login -->
+
+            <div class="login-text">
+
+                <span>
+                    Already have an account?
+                </span>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+
+            <!-- Security -->
+
+            <div class="secure-signup">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Your information is secure & encrypted
+
+            </div>
+
+
+        </div>
+
+    </div>
 
 </div>
 
-<script src="js/signup.js"></script>
+
+
+<!-- SweetAlert FIRST -->
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<!-- Signup JS -->
+
+<script src="js/signup.js"></script>
+
+
+
+<!-- Password Toggle -->
+
+<script>
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+    const password =
+        document.getElementById("password");
+
+
+    togglePassword?.addEventListener("click", () => {
+
+        const isPassword =
+            password.type === "password";
+
+
+        password.type =
+            isPassword ? "text" : "password";
+
+
+        togglePassword.innerHTML =
+            isPassword
+                ? '<i class="fa-regular fa-eye-slash"></i>'
+                : '<i class="fa-regular fa-eye"></i>';
+
+    });
+
+</script>
+
 
 </body>
 </html>

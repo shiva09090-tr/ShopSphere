@@ -6,26 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
 
-    <link rel="stylesheet" href="css/cart.css">
+   <link rel="stylesheet" href="css/cart.css">
 </head>
+<h1>Shopping Cart</h1>
 
-<body>
+<div id="cartItems"></div>
 
-    <h1>Shopping Cart</h1>
+<div id="totalBox">
 
-    <div id="cartItems"></div>
+    <h2>Total : ₹ <span id="totalPrice">0</span></h2>
 
-    <div id="totalBox">
+    <button id="buyNowBtn">
+        Buy Now
+    </button>
 
-        <h2>Total : ₹ <span id="totalPrice">0</span></h2>
-        <button id="buyNowBtn">
-            Buy Now
-        </button>
+    <button id="clearCart">
+        Empty Cart
+    </button>
 
-        <button id="clearCart">Empty Cart</button>
-
-    </div>
-
+</div>
     <script src="js/cart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

@@ -1,45 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
-<link rel="stylesheet" href="css/login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ShopSphere</title>
+
+    <link rel="stylesheet" href="css/login.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 </head>
+
 <body>
 
-<div class="container">
+    <div class="login-page">
 
-<h1>Login</h1>
+        <!-- Left Side -->
+        <div class="login-left">
 
-<form id="loginForm">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
 
-<input type="email" id="email" placeholder="Email" required>
+                <span>Shop<span>Sphere</span></span>
+            </div>
 
-<input type="password" id="password" placeholder="Password" required>
+            <div class="welcome-content">
 
-<button type="submit">
-Login
-</button>
+                <h1>
+                    Welcome Back!
+                </h1>
 
-</form>
+                <p>
+                    Login to your ShopSphere account and
+                    continue your shopping journey.
+                </p>
 
-<p>
+                <div class="features">
 
-Don't have an account?
+                    <div class="feature">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <strong>Secure Shopping</strong>
+                            <small>Your account is protected.</small>
+                        </div>
+                    </div>
 
-<a href="signup.html">
+                    <div class="feature">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <div>
+                            <strong>Fast Delivery</strong>
+                            <small>Get your orders delivered quickly.</small>
+                        </div>
+                    </div>
 
-Signup
+                    <div class="feature">
+                        <i class="fa-solid fa-heart"></i>
+                        <div>
+                            <strong>Best Products</strong>
+                            <small>Discover products you'll love.</small>
+                        </div>
+                    </div>
 
-</a>
+                </div>
 
-</p>
+            </div>
 
-</div>
+        </div>
 
-<script src="js/login.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Right Side -->
+        <div class="login-right">
+
+            <div class="login-card">
+
+                <div class="mobile-logo">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+
+                    <span>Shop<span>Sphere</span></span>
+                </div>
+
+                <div class="login-heading">
+
+                    <h2>Login</h2>
+
+                    <p>
+                        Enter your details to access your account
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <!-- Email -->
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="input-group">
+
+                        <div class="label-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <a href="#" class="forgot-password">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Remember -->
+                    <div class="remember-row">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                id="remember"
+                            >
+
+                            <span>Remember me</span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Login Button -->
+                    <button
+                        type="submit"
+                        class="login-btn"
+                    >
+
+                        <span>Login</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+
+                <!-- Signup -->
+                <div class="signup-text">
+
+                    <span>Don't have an account?</span>
+
+                    <a href="signup.html">
+                        Create Account
+                    </a>
+
+                </div>
+
+
+                <div class="secure-login">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Secure & encrypted login
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Login JS -->
+    <script src="js/login.js"></script>
+
+
+    <!-- Password Toggle -->
+    <script>
+
+        const togglePassword =
+            document.getElementById("togglePassword");
+
+        const password =
+            document.getElementById("password");
+
+        togglePassword?.addEventListener("click", () => {
+
+            const isPassword =
+                password.type === "password";
+
+            password.type =
+                isPassword ? "text" : "password";
+
+            togglePassword.innerHTML =
+                isPassword
+                    ? '<i class="fa-regular fa-eye-slash"></i>'
+                    : '<i class="fa-regular fa-eye"></i>';
+
+        });
+
+    </script>
 
 </body>
 </html>
