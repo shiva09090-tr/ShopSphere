@@ -1,6 +1,7 @@
 const express = require("express");
+
 const router = express.Router();
-const imageUpload = require("../helpers/upload");
+
 const {
     addProduct,
     getProducts,
@@ -9,9 +10,20 @@ const {
     deleteProduct
 } = require("../controllers/productController");
 
-router.post("/", imageUpload.single("image"), addProduct);
+
+// ADD
+router.post("/", addProduct);
+
+// GET ALL
 router.get("/", getProducts);
-router.put("/:id", imageUpload.single("image"), updateProduct);
-router.delete("/:id", deleteProduct);
+
+// GET SINGLE
 router.get("/:id", getSingleProduct);
+
+// UPDATE
+router.put("/:id", updateProduct);
+
+// DELETE
+router.delete("/:id", deleteProduct);
+
 module.exports = router;

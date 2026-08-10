@@ -49,6 +49,7 @@ async function loadProducts() {
 
         console.log("Products Loaded:", allProducts);
 
+
         filteredProducts = [...allProducts];
 
         // Render everything
@@ -186,6 +187,7 @@ function renderHero() {
     });
 
     startHeroAutoPlay();
+    
 }
 
 function showHero(index) {
