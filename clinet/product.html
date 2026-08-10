@@ -13,34 +13,160 @@
 </head>
 
 <body>
+<div class="product-page">
 
-<div class="container">
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Shop
+    </a>
 
-    <div class="image">
 
-        <img id="productImage" alt="Product image">
+    <div class="product-container">
 
-    </div>
+        <!-- Product Image -->
+        <div class="image-section">
 
-    <div class="details">
+            <div class="image">
 
-        <h1 id="productName"></h1>
+                <span class="product-badge">
+                    <i class="fa-solid fa-bolt"></i>
+                    ShopSphere
+                </span>
 
-        <h3 id="brand"></h3>
+                <img
+                    id="productImage"
+                    alt="Product image"
+                >
 
-        <p id="description"></p>
+            </div>
 
-        <h2 id="price"></h2>
+        </div>
 
-        <h4 id="category"></h4>
 
-        <h4 id="stock"></h4>
+        <!-- Product Details -->
+        <div class="details">
 
-        <div id="buttonArea"></div>
-        
+            <span class="product-label">
+                PRODUCT DETAILS
+            </span>
+
+
+            <h1 id="productName">
+                Product Name
+            </h1>
+
+
+            <div class="brand-row">
+
+                <i class="fa-solid fa-store"></i>
+
+                <h3 id="brand">
+                    Brand
+                </h3>
+
+            </div>
+
+
+            <div class="rating-row">
+
+                <span class="stars">
+                    ★★★★★
+                </span>
+
+                <span>
+                    Premium Product
+                </span>
+
+            </div>
+
+
+            <p
+                id="description"
+                class="description"
+            >
+                Product description
+            </p>
+
+
+            <div class="price-box">
+
+                <span class="price-label">
+                    Price
+                </span>
+
+                <h2 id="price">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <div class="info-item">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    <div>
+                        <span>Category</span>
+                        <strong id="category">
+                            -
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    <div>
+                        <span>Availability</span>
+                        <strong id="stock">
+                            Checking...
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div
+                id="buttonArea"
+                class="button-area"
+            >
+            </div>
+
+
+            <div class="secure-info">
+
+                <div>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Secure Shopping
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-truck-fast"></i>
+                    Fast Delivery
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Easy Returns
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
+```
 
 <script src="js/product.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
