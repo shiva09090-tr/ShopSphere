@@ -381,6 +381,9 @@ logoutBtn?.addEventListener("click", () => {
     checkLogin();
     window.location.reload();
 });
+// ======================================================
+// ENTRY POINT VISITOR TRACKING
+// ======================================================
 
 updateCartCount();
 checkLogin();

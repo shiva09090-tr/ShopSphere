@@ -24,7 +24,28 @@
     <div class="card" onclick="location.href='adminOrders.html'"><h2 id="revenue">₹0</h2><p>Revenue</p></div>
 </div>
 
-<div class="lowStockBox"><h2>⚠ Low Stock Products</h2><div id="lowStockList"></div></div>
+<div class="dashboard-card visitor-card"
+     onclick="window.location.href='visitors.html'">
+
+    <div class="dashboard-card-icon">
+        👥
+    </div>
+
+    <div class="dashboard-card-content">
+
+        <h3>Visitors</h3>
+
+        <p id="totalVisitors">
+            0
+        </p>
+
+        <span>
+            View Visitor Details →
+        </span>
+
+    </div>
+
+</div>
 <h2>📦 Recent Orders</h2>
 <table id="recentOrdersTable"><thead><tr><th>Customer</th><th>Phone</th><th>Status</th><th>Total</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table>
 

@@ -182,5 +182,97 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/app.js"></script>
 <script src="js/navbar.js"></script>
+<script>
+(async function () {
+
+    const API = "https://shopsphere-sedh.onrender.com/api/visitors";
+
+    // ==========================================
+    // GET EXISTING VISITOR ID
+    // ==========================================
+
+    let visitorId =
+        localStorage.getItem("shopSphereVisitorId");
+
+
+    // ==========================================
+    // CREATE NEW VISITOR ID
+    // ==========================================
+
+    if (!visitorId) {
+
+        visitorId =
+            "visitor_" +
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2, 10);
+
+        localStorage.setItem(
+            "shopSphereVisitorId",
+            visitorId
+        );
+
+        console.log(
+            "🆕 New Visitor ID:",
+            visitorId
+        );
+
+    } else {
+
+        console.log(
+            "↩️ Existing Visitor ID:",
+            visitorId
+        );
+
+    }
+
+
+    // ==========================================
+    // SEND VISITOR TO BACKEND
+    // ==========================================
+
+    try {
+
+        const response =
+            await fetch(
+                `${API}/entry`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        visitorId
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "👤 Visitor API Response:",
+            result
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Visitor Tracking Error:",
+            error
+        );
+
+    }
+
+})();
+</script>
 </body>
 </html>

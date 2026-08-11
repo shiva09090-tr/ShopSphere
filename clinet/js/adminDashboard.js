@@ -217,3 +217,52 @@ if (ctx && typeof Chart !== "undefined") {
 // --------------------------------------------------
 
 loadDashboard();
+async function loadVisitorCount() {
+
+    try {
+
+        const response =
+            await fetch(
+                "https://shopsphere-sedh.onrender.com/api/visitors/stats"
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Visitor Stats:",
+            result
+        );
+
+
+        if (result.success) {
+
+            const element =
+                document.getElementById(
+                    "totalVisitors"
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    result.totalVisitors;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Visitor Count Error:",
+            error
+        );
+
+    }
+}
+
+
+loadVisitorCount();
