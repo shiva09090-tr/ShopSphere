@@ -9,6 +9,22 @@ const visitorSchema = new mongoose.Schema(
             index: true
         },
 
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null
+        },
+
+        name: {
+            type: String,
+            default: "Guest"
+        },
+
+        email: {
+            type: String,
+            default: ""
+        },
+
         firstVisit: {
             type: Date,
             default: Date.now
@@ -17,6 +33,11 @@ const visitorSchema = new mongoose.Schema(
         lastVisit: {
             type: Date,
             default: Date.now
+        },
+
+        totalVisits: {
+            type: Number,
+            default: 1
         }
     },
     {
@@ -24,10 +45,4 @@ const visitorSchema = new mongoose.Schema(
     }
 );
 
-const Visitor =
-    mongoose.model(
-        "Visitor",
-        visitorSchema
-    );
-
-module.exports = Visitor;
+module.exports = mongoose.model("Visitor", visitorSchema);

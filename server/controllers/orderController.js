@@ -378,16 +378,104 @@ const getOrders = async (req, res) => {
     }
 
 };
+// ==========================================
+// TRACK ORDER
+// ==========================================
 
+const trackOrder = async (req, res) => {
+
+    try {
+
+        const { orderId, phone } = req.body;
+
+
+        // ==========================================
+        // VALIDATION
+        // ==========================================
+
+        if (!orderId || !phone) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Order ID and phone number are required"
+
+            });
+
+        }
+
+
+        // ==========================================
+        // FIND ORDER
+        // ==========================================
+
+        const order =
+            await Order.findOne({
+                _id: orderId,
+                phone: phone
+            });
+
+
+        // ==========================================
+        // ORDER NOT FOUND
+        // ==========================================
+
+        if (!order) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Order not found. Please check Order ID and phone number."
+
+            });
+
+        }
+
+
+        // ==========================================
+        // SUCCESS
+        // ==========================================
+
+        res.status(200).json({
+
+            success: true,
+
+            data: order
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Track Order Error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                error.message
+
+        });
+
+    }
+
+};
 
 // =====================================================
 // EXPORT
 // =====================================================
 
 module.exports = {
-
     createOrder,
-
-    getOrders
-
+    getOrders,
+    trackOrder
 };

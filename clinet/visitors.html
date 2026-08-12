@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: auto;
         }
 
@@ -44,6 +45,10 @@
             cursor: pointer;
         }
 
+        .back-btn:hover {
+            background: #444;
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -55,12 +60,13 @@
             background: white;
             padding: 25px;
             border-radius: 14px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
         .stat-card h3 {
             color: #666;
             margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .stat-card h2 {
@@ -71,15 +77,21 @@
             background: white;
             padding: 25px;
             border-radius: 14px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
         .recent h2 {
             margin-bottom: 20px;
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
+            min-width: 900px;
             border-collapse: collapse;
         }
 
@@ -88,20 +100,59 @@
             padding: 14px;
             text-align: left;
             border-bottom: 1px solid #eee;
+            white-space: nowrap;
         }
 
         th {
             background: #f8f8f8;
+            font-weight: 600;
+        }
+
+        td small {
+            color: #666;
+        }
+
+        .guest {
+            color: #888;
+            font-style: italic;
+        }
+
+        .visit-count {
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .error {
+            color: #d00;
+            text-align: center;
+            padding: 25px;
         }
 
         @media (max-width: 800px) {
 
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
             body {
                 padding: 15px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 18px;
+            }
+
+            .stat-card h2 {
+                font-size: 26px;
+            }
+
+            .header h1 {
+                font-size: 24px;
             }
         }
 
@@ -117,16 +168,23 @@
                 align-items: flex-start;
             }
 
-            table {
-                font-size: 13px;
+            .recent {
+                padding: 15px;
+            }
+
+            .recent h2 {
+                font-size: 20px;
             }
         }
     </style>
+
 </head>
 
 <body>
 
 <div class="container">
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -142,59 +200,99 @@
     </div>
 
 
+    <!-- STATISTICS -->
+
     <div class="stats">
 
         <div class="stat-card">
+
             <h3>Total Visitors</h3>
+
             <h2 id="totalVisitors">0</h2>
+
         </div>
 
+
         <div class="stat-card">
+
             <h3>Today</h3>
+
             <h2 id="todayVisitors">0</h2>
+
         </div>
 
+
         <div class="stat-card">
+
             <h3>Last 7 Days</h3>
+
             <h2 id="last7Days">0</h2>
+
         </div>
 
+
         <div class="stat-card">
+
             <h3>Last 30 Days</h3>
+
             <h2 id="last30Days">0</h2>
+
         </div>
 
     </div>
 
 
+    <!-- RECENT VISITORS -->
+
     <div class="recent">
 
         <h2>Recent Visitors</h2>
 
-        <table>
+        <div class="table-wrapper">
 
-            <thead>
+            <table>
 
-                <tr>
-                    <th>#</th>
-                    <th>Visitor ID</th>
-                    <th>First Visit</th>
-                    <th>Last Visit</th>
-                </tr>
+                <thead>
 
-            </thead>
+                    <tr>
 
-            <tbody id="visitorTable">
+                        <th>#</th>
 
-                <tr>
-                    <td colspan="4">
-                        Loading...
-                    </td>
-                </tr>
+                        <th>Name</th>
 
-            </tbody>
+                        <th>Email</th>
 
-        </table>
+                        <th>Visitor ID</th>
+
+                        <th>First Visit</th>
+
+                        <th>Last Visit</th>
+
+                        <th>Total Visits</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="visitorTable">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="loading"
+                        >
+                            Loading...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
@@ -203,17 +301,20 @@
 
 <script>
 
-const API = "https://shopsphere-sedh.onrender.com/api/visitors";
+const API =
+    "https://shopsphere-sedh.onrender.com/api/visitors";
 
+
+// ==================================================
+// LOAD VISITOR STATS
+// ==================================================
 
 async function loadVisitorStats() {
 
     try {
 
         const response =
-            await fetch(
-                `${API}/stats`
-            );
+            await fetch(`${API}/stats`);
 
         const data =
             await response.json();
@@ -224,31 +325,38 @@ async function loadVisitorStats() {
         );
 
         if (!data.success) {
+
             throw new Error(
                 data.message ||
                 "Unable to load stats"
             );
+
         }
+
 
         document.getElementById(
             "totalVisitors"
         ).textContent =
-            data.totalVisitors;
+            data.totalVisitors || 0;
+
 
         document.getElementById(
             "todayVisitors"
         ).textContent =
-            data.todayVisitors;
+            data.todayVisitors || 0;
+
 
         document.getElementById(
             "last7Days"
         ).textContent =
-            data.last7Days;
+            data.last7Days || 0;
+
 
         document.getElementById(
             "last30Days"
         ).textContent =
-            data.last30Days;
+            data.last30Days || 0;
+
 
     } catch (error) {
 
@@ -262,29 +370,44 @@ async function loadVisitorStats() {
 }
 
 
+// ==================================================
+// LOAD RECENT VISITORS
+// ==================================================
+
 async function loadRecentVisitors() {
+
+    const table =
+        document.getElementById(
+            "visitorTable"
+        );
 
     try {
 
         const response =
-            await fetch(
-                `${API}/recent`
+            await fetch(`${API}/recent`);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server Error: ${response.status}`
             );
+
+        }
+
 
         const result =
             await response.json();
+
 
         console.log(
             "Recent Visitors:",
             result
         );
 
-        const table =
-            document.getElementById(
-                "visitorTable"
-            );
 
         table.innerHTML = "";
+
 
         if (
             !result.success ||
@@ -293,33 +416,78 @@ async function loadRecentVisitors() {
         ) {
 
             table.innerHTML = `
+
                 <tr>
-                    <td colspan="4">
+
+                    <td
+                        colspan="7"
+                        class="loading"
+                    >
+
                         No visitors found
+
                     </td>
+
                 </tr>
+
             `;
 
             return;
+
         }
 
+
+        // ==========================================
+        // DISPLAY VISITORS
+        // ==========================================
 
         result.data.forEach(
             (visitor, index) => {
 
+
                 const firstVisit =
-                    new Date(
-                        visitor.firstVisit
-                    ).toLocaleString(
-                        "en-IN"
-                    );
+                    visitor.firstVisit
+                        ? new Date(
+                            visitor.firstVisit
+                        ).toLocaleString(
+                            "en-IN"
+                        )
+                        : "—";
+
 
                 const lastVisit =
-                    new Date(
-                        visitor.lastVisit
-                    ).toLocaleString(
-                        "en-IN"
-                    );
+                    visitor.lastVisit
+                        ? new Date(
+                            visitor.lastVisit
+                        ).toLocaleString(
+                            "en-IN"
+                        )
+                        : "—";
+
+
+                const visitorName =
+                    visitor.name &&
+                    visitor.name.trim()
+                        ? visitor.name
+                        : "Guest";
+
+
+                const visitorEmail =
+                    visitor.email &&
+                    visitor.email.trim()
+                        ? visitor.email
+                        : "—";
+
+
+                const totalVisits =
+                    visitor.totalVisits ||
+                    1;
+
+
+                const nameClass =
+                    visitorName === "Guest"
+                        ? "guest"
+                        : "";
 
 
                 table.innerHTML += `
@@ -330,16 +498,40 @@ async function loadRecentVisitors() {
                             ${index + 1}
                         </td>
 
-                        <td>
-                            ${visitor.visitorId}
+
+                        <td class="${nameClass}">
+                            ${escapeHTML(visitorName)}
                         </td>
+
+
+                        <td>
+                            ${escapeHTML(visitorEmail)}
+                        </td>
+
+
+                        <td>
+
+                            <small>
+                                ${escapeHTML(
+                                    visitor.visitorId || "—"
+                                )}
+                            </small>
+
+                        </td>
+
 
                         <td>
                             ${firstVisit}
                         </td>
 
+
                         <td>
                             ${lastVisit}
+                        </td>
+
+
+                        <td class="visit-count">
+                            ${totalVisits}
                         </td>
 
                     </tr>
@@ -349,6 +541,7 @@ async function loadRecentVisitors() {
             }
         );
 
+
     } catch (error) {
 
         console.error(
@@ -356,15 +549,66 @@ async function loadRecentVisitors() {
             error
         );
 
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="error"
+                >
+
+                    Unable to load visitors
+
+                </td>
+
+            </tr>
+
+        `;
+
     }
 
 }
 
 
+// ==================================================
+// SECURITY - ESCAPE HTML
+// ==================================================
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ==================================================
+// START
+// ==================================================
+
 loadVisitorStats();
+
 loadRecentVisitors();
+
+
+// Refresh every 30 seconds
+
+setInterval(() => {
+
+    loadVisitorStats();
+
+    loadRecentVisitors();
+
+}, 30000);
 
 </script>
 
 </body>
+
 </html>

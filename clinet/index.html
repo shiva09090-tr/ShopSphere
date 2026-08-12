@@ -185,7 +185,8 @@
 <script>
 (async function () {
 
-    const API = "https://shopsphere-sedh.onrender.com/api/visitors";
+    const API =
+        "https://shopsphere-sedh.onrender.com/api/visitors";
 
     // ==========================================
     // GET EXISTING VISITOR ID
@@ -230,6 +231,63 @@
 
 
     // ==========================================
+    // GET LOGGED-IN USER
+    // ==========================================
+
+    let loggedUser = null;
+
+    try {
+
+        loggedUser =
+            JSON.parse(
+                localStorage.getItem("user")
+            );
+
+    } catch (error) {
+
+        console.log(
+            "No valid logged-in user found."
+        );
+
+    }
+
+
+    // ==========================================
+    // PREPARE VISITOR DATA
+    // ==========================================
+
+    const visitorData = {
+
+        visitorId: visitorId,
+
+        userId:
+            loggedUser?._id ||
+            loggedUser?.id ||
+            null,
+
+        name:
+            loggedUser?.name ||
+            loggedUser?.username ||
+            "Guest",
+
+        email:
+            loggedUser?.email ||
+            ""
+
+    };
+
+
+    // ==========================================
+    // DEBUG
+    // ==========================================
+
+    console.log(
+        "👤 Visitor Data Being Sent:",
+        visitorData
+    );
+
+
+    // ==========================================
     // SEND VISITOR TO BACKEND
     // ==========================================
 
@@ -246,9 +304,10 @@
                             "application/json"
                     },
 
-                    body: JSON.stringify({
-                        visitorId
-                    })
+                    body:
+                        JSON.stringify(
+                            visitorData
+                        )
                 }
             );
 
@@ -261,6 +320,16 @@
             "👤 Visitor API Response:",
             result
         );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Visitor API Error:",
+                result
+            );
+
+        }
 
 
     } catch (error) {

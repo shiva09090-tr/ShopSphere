@@ -1,95 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShopSphere Admin Panel</title>
-<link rel="stylesheet" href="css/admin.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopSphere Admin Panel</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="css/admin.css">
 </head>
+
 <body>
-<div class="admin-topbar">
-    <div><i class="fa-solid fa-store"></i> <strong>ShopSphere Admin</strong></div>
-    <button id="logoutBtn" type="button">Logout</button>
-</div>
-<div class="container">
-<h1>ShopSphere Admin Panel</h1>
-<div id="notificationBox" class="notification">🔔 New Orders : <span id="newOrders">0</span></div>
 
-<div class="dashboardCards">
-    <div class="card" onclick="location.href='#productForm'"><h2 id="products">0</h2><p>Products</p></div>
-    <div class="card" onclick="location.href='adminOrders.html'"><h2 id="orders">0</h2><p>Orders</p></div>
-    <div class="card" onclick="location.href='adminOrders.html?status=Pending'"><h2 id="pending">0</h2><p>Pending</p></div>
-    <div class="card" onclick="location.href='adminOrders.html?status=Delivered'"><h2 id="delivered">0</h2><p>Delivered</p></div>
-    <div class="card" onclick="location.href='adminOrders.html?status=Cancelled'"><h2 id="cancelled">0</h2><p>Cancelled</p></div>
-    <div class="card" onclick="location.href='adminOrders.html'"><h2 id="revenue">₹0</h2><p>Revenue</p></div>
-</div>
+    <!-- ================= TOP BAR ================= -->
 
-<div class="dashboard-card visitor-card"
-     onclick="window.location.href='visitors.html'">
+    <header class="admin-topbar">
 
-    <div class="dashboard-card-icon">
-        👥
-    </div>
+        <div class="admin-brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-store"></i>
+            </div>
 
-    <div class="dashboard-card-content">
+            <div>
+                <h2>ShopSphere</h2>
+                <span>Admin Dashboard</span>
+            </div>
+        </div>
 
-        <h3>Visitors</h3>
+        <div class="admin-top-actions">
 
-        <p id="totalVisitors">
-            0
-        </p>
+            <a href="index.html" class="view-store">
+                <i class="fa-solid fa-globe"></i>
+                <span>View Store</span>
+            </a>
 
-        <span>
-            View Visitor Details →
-        </span>
+            <button id="logoutBtn" class="logout-btn" type="button">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
 
-    </div>
+        </div>
 
-</div>
-<h2>📦 Recent Orders</h2>
-<table id="recentOrdersTable"><thead><tr><th>Customer</th><th>Phone</th><th>Status</th><th>Total</th><th>Date</th></tr></thead><tbody id="recentOrdersBody"></tbody></table>
+    </header>
 
-<div class="chartBox"><h2>Monthly Sales</h2><canvas id="salesChart"></canvas></div>
 
-<h2 id="productFormTitle">Add / Update Product</h2>
-<form id="productForm">
-<label for="name">Product Name</label><input type="text" id="name" placeholder="Product Name" required>
-<label for="description">Description</label><textarea id="description" placeholder="Description" required></textarea>
-<label for="price">Price</label><input type="number" id="price" placeholder="Price" min="0" required>
-<label for="category">Category</label><input type="text" id="category" placeholder="Example: Mobile, Shoes, Fashion" required>
-<label for="brand">Brand</label><input type="text" id="brand" placeholder="Brand" required>
-<label for="stock">Stock</label><input type="number" id="stock" placeholder="Stock" min="0" required>
-<label>Product Image URL</label>
+    <!-- ================= MAIN ================= -->
 
-<input
-    type="url"
-    id="image"
-    placeholder="https://example.com/image.jpg"
-    autocomplete="off"
->
+    <main class="admin-container">
 
-<img
-    id="preview"
-    src=""
-    alt="Image Preview"
-    class="preview-image"
-    style="display:none;"
->
-<div class="featured-option"><input type="checkbox" id="featured"><div><strong>Show this product in Home Hero Slider</strong><small>Select this for products you want to promote on the homepage. If nothing is selected, the latest 3 products appear automatically.</small></div></div>
-<img id="preview" src="" alt="Preview" class="preview-image">
-<div class="form-actions"><button type="submit" id="submitBtn">Add Product</button><button type="button" id="cancelEditBtn" class="secondary" style="display:none;">Cancel Edit</button></div>
-<a class="orders-link" href="adminOrders.html">📦 View Orders</a>
-</form>
-<a class="orders-link" href="adminCoupons.html">🎟️ Manage Coupons</a>
-<h2>All Products</h2><div id="productList"></div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- PAGE HEADER -->
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <section class="page-header">
 
-<script src="js/adminDashboard.js"></script>
+            <div>
+                <span class="page-eyebrow">
+                    <i class="fa-solid fa-chart-line"></i>
+                    STORE MANAGEMENT
+                </span>
 
-<script src="js/admin.js"></script>
-<script src="js/couponAdmin.js"></script>
+                <h1>Dashboard Overview</h1>
+
+                <p>
+                    Manage your products, orders, visitors and store performance.
+                </p>
+            </div>
+
+            <div class="admin-date">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="currentDate">Today</span>
+            </div>
+
+        </section>
+
+
+        <!-- ================= NOTIFICATION ================= -->
+
+        <div id="notificationBox" class="notification">
+
+            <div class="notification-icon">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+
+            <div>
+                <strong>New Orders</strong>
+
+                <span>
+                    You have
+                    <b id="newOrders">0</b>
+                    new order(s).
+                </span>
+            </div>
+
+            <a href="adminOrders.html">
+                View Orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        <!-- ================= DASHBOARD CARDS ================= -->
+
+        <section class="dashboardCards">
+
+            <!-- PRODUCTS -->
+
+            <div
+                class="card dashboard-product"
+                onclick="location.href='#productForm'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Total Products</span>
+                    <h2 id="products">0</h2>
+                    <small>
+                        Manage Products
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- ORDERS -->
+
+            <div
+                class="card dashboard-orders"
+                onclick="location.href='adminOrders.html'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Total Orders</span>
+                    <h2 id="orders">0</h2>
+                    <small>
+                        View Orders
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div
+                class="card dashboard-pending"
+                onclick="location.href='adminOrders.html?status=Pending'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Pending Orders</span>
+                    <h2 id="pending">0</h2>
+                    <small>
+                        Check Pending
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- DELIVERED -->
+
+            <div
+                class="card dashboard-delivered"
+                onclick="location.href='adminOrders.html?status=Delivered'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Delivered</span>
+                    <h2 id="delivered">0</h2>
+                    <small>
+                        View Delivered
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- CANCELLED -->
+
+            <div
+                class="card dashboard-cancelled"
+                onclick="location.href='adminOrders.html?status=Cancelled'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Cancelled</span>
+                    <h2 id="cancelled">0</h2>
+                    <small>
+                        View Cancelled
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- REVENUE -->
+
+            <div
+                class="card dashboard-revenue"
+                onclick="location.href='adminOrders.html'"
+            >
+
+                <div class="card-icon">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+
+                <div class="card-info">
+                    <span>Total Revenue</span>
+                    <h2 id="revenue">₹0</h2>
+                    <small>
+                        View Sales
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= VISITORS ================= -->
+
+        <section class="visitor-section">
+
+            <div
+                class="visitor-card"
+                onclick="window.location.href='visitors.html'"
+            >
+
+                <div class="visitor-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="visitor-content">
+
+                    <span class="visitor-label">
+                        STORE ANALYTICS
+                    </span>
+
+                    <h3>Website Visitors</h3>
+
+                    <p id="totalVisitors">
+                        0
+                    </p>
+
+                    <span class="visitor-link">
+                        View Visitor Details
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+
+                </div>
+
+                <div class="visitor-decoration">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECENT ORDERS ================= -->
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="section-eyebrow">
+                        ORDER MANAGEMENT
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-box-open"></i>
+                        Recent Orders
+                    </h2>
+                </div>
+
+                <a href="adminOrders.html" class="section-link">
+                    View All
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table id="recentOrdersTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recentOrdersBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SALES CHART ================= -->
+
+        <section class="dashboard-section chart-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="section-eyebrow">
+                        PERFORMANCE
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-chart-column"></i>
+                        Monthly Sales
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="chartBox">
+
+                <canvas id="salesChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PRODUCT FORM ================= -->
+
+        <section class="dashboard-section product-management">
+
+            <div class="section-title">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        PRODUCT MANAGEMENT
+                    </span>
+
+                    <h2 id="productFormTitle">
+                        <i class="fa-solid fa-plus"></i>
+                        Add / Update Product
+                    </h2>
+
+                    <p>
+                        Add a new product or update an existing product.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="productForm">
+
+                <div class="form-grid">
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            <i class="fa-solid fa-tag"></i>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter product name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BRAND -->
+
+                    <div class="form-group">
+
+                        <label for="brand">
+                            <i class="fa-solid fa-copyright"></i>
+                            Brand
+                        </label>
+
+                        <input
+                            type="text"
+                            id="brand"
+                            placeholder="Enter brand name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="form-group">
+
+                        <label for="price">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                            Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="price"
+                            placeholder="Enter price"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Category
+                        </label>
+
+                        <input
+                            type="text"
+                            id="category"
+                            placeholder="Example: Mobile, Shoes, Fashion"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- STOCK -->
+
+                    <div class="form-group">
+
+                        <label for="stock">
+                            <i class="fa-solid fa-cubes"></i>
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            placeholder="Available quantity"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- IMAGE URL -->
+
+                    <div class="form-group">
+
+                        <label for="image">
+                            <i class="fa-solid fa-image"></i>
+                            Product Image URL
+                        </label>
+
+                        <input
+                            type="url"
+                            id="image"
+                            placeholder="https://example.com/image.jpg"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group full-width">
+
+                        <label for="description">
+                            <i class="fa-solid fa-align-left"></i>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Write a short product description..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGE PREVIEW -->
+
+                <div class="image-preview-box">
+
+                    <div class="preview-heading">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        <span>Image Preview</span>
+
+                    </div>
+
+                    <img
+                        id="preview"
+                        src=""
+                        alt="Product Preview"
+                        class="preview-image"
+                    >
+
+                    <div
+                        id="previewPlaceholder"
+                        class="preview-placeholder"
+                    >
+                        <i class="fa-regular fa-image"></i>
+                        <span>Image preview will appear here</span>
+                    </div>
+
+                </div>
+
+
+                <!-- FEATURED PRODUCT -->
+
+                <div class="featured-option">
+
+                    <input
+                        type="checkbox"
+                        id="featured"
+                    >
+
+                    <div>
+
+                        <strong>
+                            <i class="fa-solid fa-star"></i>
+                            Show this product in Home Hero Slider
+                        </strong>
+
+                        <small>
+                            Select this product to promote it on the homepage.
+                            If nothing is selected, the latest 3 products will
+                            appear automatically.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORM ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="primary-btn"
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                        Add Product
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelEditBtn"
+                        class="secondary"
+                        style="display:none;"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                        Cancel Edit
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= QUICK LINKS ================= -->
+
+        <section class="quick-actions">
+
+            <a href="adminOrders.html" class="quick-card">
+
+                <div>
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <span>Manage Orders</span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <a href="adminCoupons.html" class="quick-card">
+
+                <div>
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+
+                <span>Manage Coupons</span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <a href="visitors.html" class="quick-card">
+
+                <div>
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <span>Visitor Details</span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </section>
+
+
+        <!-- ================= ALL PRODUCTS ================= -->
+
+        <section class="dashboard-section all-products-section">
+
+            <div class="section-title">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        INVENTORY
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        All Products
+                    </h2>
+
+                    <p>
+                        View, edit or remove products from your store.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="productList" class="admin-product-list">
+
+                <!-- Products loaded by JavaScript -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= SCRIPTS ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="js/adminDashboard.js"></script>
+
+    <script src="js/admin.js"></script>
+
+    <script src="js/couponAdmin.js"></script>
+
 </body>
+
 </html>
