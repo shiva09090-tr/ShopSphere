@@ -3,22 +3,31 @@ const express = require("express");
 const router = express.Router();
 
 const {
+
     createOrder,
+
     getOrders,
+
+    getAllOrders,
+
     trackOrder
+
 } = require("../controllers/orderController");
 
 
-// Create Order
 router.post("/", createOrder);
 
 
-// Get User Orders
-router.get("/:userId", getOrders);
+// ALL ORDERS
+router.get("/all", getAllOrders);
 
 
-// Track Order
+// TRACK ORDER
 router.post("/track", trackOrder);
+
+
+// USER ORDERS
+router.get("/:userId", getOrders);
 
 
 module.exports = router;

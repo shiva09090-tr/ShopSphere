@@ -1,18 +1,50 @@
-const customer = JSON.parse(localStorage.getItem("customer"));
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
+// ======================================================
+// GET DATA FROM LOCAL STORAGE
+// ======================================================
 
-const customerDiv = document.getElementById("customerDetails");
-const productDiv = document.getElementById("productList");
-const totalDiv = document.getElementById("grandTotal");
-const discountDiv = document.getElementById("discount");
+const customer =
+    JSON.parse(localStorage.getItem("customer"));
 
-const applyCouponBtn = document.getElementById("applyCoupon");
-const confirmBtn = document.getElementById("confirmBtn");
-const couponInput = document.getElementById("couponCode");
+const cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+
+// ======================================================
+// ELEMENTS
+// ======================================================
+
+const customerDiv =
+    document.getElementById("customerDetails");
+
+const productDiv =
+    document.getElementById("productList");
+
+const totalDiv =
+    document.getElementById("grandTotal");
+
+const discountDiv =
+    document.getElementById("discount");
+
+const applyCouponBtn =
+    document.getElementById("applyCoupon");
+
+const confirmBtn =
+    document.getElementById("confirmBtn");
+
+const couponInput =
+    document.getElementById("couponCode");
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
 
 let total = 0;
+
 let discount = 0;
+
 let appliedCouponCode = "";
+
 let finalTotal = 0;
 
 
@@ -29,16 +61,21 @@ if (!customer) {
             title: "Customer Details Missing",
             text: "Please enter your details first."
         }).then(() => {
-            window.location.href = "checkout.html";
+
+            window.location.href =
+                "checkout.html";
+
         });
 
     } else {
 
-        alert("Please enter your customer details first.");
-        window.location.href = "checkout.html";
+        alert(
+            "Please enter your customer details first."
+        );
 
+        window.location.href =
+            "checkout.html";
     }
-
 }
 
 
@@ -49,6 +86,7 @@ if (!customer) {
 if (customerDiv && customer) {
 
     customerDiv.innerHTML = `
+
         <div class="customer-info">
 
             <p>
@@ -87,8 +125,8 @@ if (customerDiv && customer) {
             </p>
 
         </div>
-    `;
 
+    `;
 }
 
 
@@ -101,82 +139,83 @@ if (cart.length === 0) {
     if (productDiv) {
 
         productDiv.innerHTML = `
-            <p class="empty-cart">
+
+            <p style="
+                color:#777;
+                padding:15px 0;
+            ">
                 Your cart is empty.
             </p>
+
         `;
 
     }
 
-    if (totalDiv) {
-        totalDiv.innerText = "₹0";
-    }
-
-} else {
+}
 
 
-    // ==================================================
-    // SHOW PRODUCTS
-    // ==================================================
+// ======================================================
+// SHOW PRODUCTS
+// ======================================================
+
+if (productDiv) {
+
+    productDiv.innerHTML = "";
+
+}
+
+
+cart.forEach((item) => {
+
+    const quantity =
+        Number(item.quantity) || 1;
+
+    const price =
+        Number(item.price) || 0;
+
+    const subtotal =
+        price * quantity;
+
+    total += subtotal;
+
 
     if (productDiv) {
 
-        productDiv.innerHTML = "";
+        productDiv.innerHTML += `
+
+            <div class="summary-product">
+
+                <div class="product-info">
+
+                    <strong>
+                        ${item.name || "Product"}
+                    </strong>
+
+                    <p>
+                        ₹${price} × ${quantity}
+                    </p>
+
+                </div>
+
+                <strong>
+                    ₹${subtotal}
+                </strong>
+
+            </div>
+
+        `;
 
     }
 
-
-    cart.forEach((product) => {
-
-        const quantity =
-            Number(product.quantity) || 1;
-
-        const price =
-            Number(product.price) || 0;
-
-        const subtotal =
-            price * quantity;
-
-        total += subtotal;
-
-
-        if (productDiv) {
-
-            productDiv.innerHTML += `
-                <div class="summary-product">
-
-                    <div class="summary-product-info">
-
-                        <strong>
-                            ${product.name || "Product"}
-                        </strong>
-
-                        <p>
-                            ₹${price.toLocaleString("en-IN")}
-                            × ${quantity}
-                        </p>
-
-                    </div>
-
-                    <strong>
-                        ₹${subtotal.toLocaleString("en-IN")}
-                    </strong>
-
-                </div>
-            `;
-
-        }
-
-    });
-
-}
+});
 
 
 // ======================================================
 // INITIAL TOTAL
 // ======================================================
 
-finalTotal = total - discount;
+finalTotal = total;
+
 
 if (totalDiv) {
 
@@ -187,8 +226,7 @@ if (totalDiv) {
 
 if (discountDiv) {
 
-    discountDiv.innerText =
-        discount.toFixed(0);
+    discountDiv.innerText = "0";
 
 }
 
@@ -199,169 +237,205 @@ if (discountDiv) {
 
 if (applyCouponBtn) {
 
-    applyCouponBtn.addEventListener("click", async () => {
+    applyCouponBtn.addEventListener(
+        "click",
+        async () => {
 
-        const code =
-            couponInput
-                ? couponInput.value.trim().toUpperCase()
-                : "";
-
-
-        if (!code) {
-
-            Swal.fire({
-                icon: "warning",
-                title: "Enter Coupon Code",
-                text: "Please enter a coupon code."
-            });
-
-            return;
-
-        }
+            const code =
+                couponInput
+                    ? couponInput.value
+                        .trim()
+                        .toUpperCase()
+                    : "";
 
 
-        try {
+            if (!code) {
 
-            applyCouponBtn.disabled = true;
-            applyCouponBtn.innerText = "Checking...";
+                Swal.fire({
 
+                    icon: "warning",
 
-            const response = await fetch(
-                "https://shopsphere-sedh.onrender.com/api/coupons/validate",
-                {
-                    method: "POST",
+                    title: "Enter Coupon Code",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    text:
+                        "Please enter a coupon code."
 
-                    body: JSON.stringify({
-                        code: code,
-                        orderTotal: total
-                    })
-                }
-            );
+                });
+
+                return;
+
+            }
 
 
-            const result =
-                await response.json();
+            try {
+
+                applyCouponBtn.disabled = true;
+
+                applyCouponBtn.innerText =
+                    "Checking...";
 
 
-            if (!response.ok) {
+                const response =
+                    await fetch(
+                        "https://shopsphere-sedh.onrender.com/api/coupons/validate",
+                        {
 
-                throw new Error(
-                    result.message ||
-                    "Invalid coupon"
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                code: code,
+
+                                orderTotal: total
+
+                            })
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Coupon API Response:",
+                    result
                 );
 
+
+                if (!response.ok) {
+
+                    throw new Error(
+
+                        result.message ||
+                        "Invalid coupon"
+
+                    );
+
+                }
+
+
+                // ======================================
+                // COUPON SUCCESS
+                // ======================================
+
+                discount =
+                    Number(
+                        result.data.discount
+                    ) || 0;
+
+
+                finalTotal =
+                    Number(
+                        result.data.finalTotal
+                    );
+
+
+                appliedCouponCode =
+                    result.data.code ||
+                    code;
+
+
+                if (discountDiv) {
+
+                    discountDiv.innerText =
+                        discount.toFixed(0);
+
+                }
+
+
+                if (totalDiv) {
+
+                    totalDiv.innerText =
+                        `₹${finalTotal.toLocaleString("en-IN")}`;
+
+                }
+
+
+                Swal.fire({
+
+                    icon: "success",
+
+                    title: "Coupon Applied",
+
+                    text:
+                        `You saved ₹${discount.toFixed(0)}`,
+
+                    timer: 1500,
+
+                    showConfirmButton: false
+
+                });
+
             }
 
 
-            // ------------------------------------------
-            // COUPON SUCCESS
-            // ------------------------------------------
+            catch (error) {
 
-            discount =
-                Number(result.data.discount) || 0;
-
-
-            finalTotal =
-                Number(result.data.finalTotal);
+                console.error(
+                    "Coupon Error:",
+                    error
+                );
 
 
-            appliedCouponCode =
-                result.data.code || code;
+                discount = 0;
+
+                finalTotal = total;
+
+                appliedCouponCode = "";
 
 
-            if (discountDiv) {
+                if (discountDiv) {
 
-                discountDiv.innerText =
-                    discount.toFixed(0);
+                    discountDiv.innerText =
+                        "0";
+
+                }
+
+
+                if (totalDiv) {
+
+                    totalDiv.innerText =
+                        `₹${total.toLocaleString("en-IN")}`;
+
+                }
+
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title: "Invalid Coupon",
+
+                    text:
+                        error.message ||
+                        "Unable to apply coupon."
+
+                });
 
             }
 
 
-            if (totalDiv) {
+            finally {
 
-                totalDiv.innerText =
-                    `₹${finalTotal.toLocaleString("en-IN")}`;
+                applyCouponBtn.disabled =
+                    false;
+
+                applyCouponBtn.innerText =
+                    "Apply Coupon";
 
             }
-
-
-            Swal.fire({
-
-                icon: "success",
-
-                title: "Coupon Applied",
-
-                text:
-                    `You saved ₹${discount.toFixed(0)}`,
-
-                timer: 1500,
-
-                showConfirmButton: false
-
-            });
 
         }
-
-
-        catch (error) {
-
-            console.error(
-                "Coupon Error:",
-                error
-            );
-
-
-            discount = 0;
-
-            finalTotal = total;
-
-            appliedCouponCode = "";
-
-
-            if (discountDiv) {
-
-                discountDiv.innerText = "0";
-
-            }
-
-
-            if (totalDiv) {
-
-                totalDiv.innerText =
-                    `₹${total.toLocaleString("en-IN")}`;
-
-            }
-
-
-            Swal.fire({
-
-                icon: "error",
-
-                title: "Coupon Not Applied",
-
-                text:
-                    error.message ||
-                    "Invalid coupon"
-
-            });
-
-        }
-
-
-        finally {
-
-            applyCouponBtn.disabled = false;
-
-            applyCouponBtn.innerText =
-                "Apply Coupon";
-
-        }
-
-    });
+    );
 
 }
 
@@ -372,418 +446,560 @@ if (applyCouponBtn) {
 
 if (confirmBtn) {
 
-    confirmBtn.addEventListener("click", async () => {
+    confirmBtn.addEventListener(
+        "click",
+        async () => {
 
 
-        // ----------------------------------------------
-        // CUSTOMER
-        // ----------------------------------------------
+            // ==========================================
+            // CUSTOMER
+            // ==========================================
 
-        const currentCustomer =
-            JSON.parse(
-                localStorage.getItem("customer")
+            const currentCustomer =
+                JSON.parse(
+                    localStorage.getItem(
+                        "customer"
+                    )
+                );
+
+
+            // ==========================================
+            // CART
+            // ==========================================
+
+            const currentCart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "cart"
+                    )
+                ) || [];
+
+
+            // ==========================================
+            // CUSTOMER CHECK
+            // ==========================================
+
+            if (!currentCustomer) {
+
+                await Swal.fire({
+
+                    icon: "error",
+
+                    title:
+                        "Customer Details Missing",
+
+                    text:
+                        "Please enter customer details first."
+
+                });
+
+                return;
+
+            }
+
+
+            // ==========================================
+            // CART CHECK
+            // ==========================================
+
+            if (currentCart.length === 0) {
+
+                await Swal.fire({
+
+                    icon: "warning",
+
+                    title: "Cart is Empty",
+
+                    text:
+                        "Please add products before placing an order."
+
+                });
+
+                return;
+
+            }
+
+
+            // ==========================================
+            // LOGIN CHECK
+            // ==========================================
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem("user")
+                );
+
+
+            console.log(
+                "Logged in user:",
+                user
             );
 
 
-        // ----------------------------------------------
-        // CART
-        // ----------------------------------------------
+            // IMPORTANT:
+            // Your login stores `id`, NOT `_id`
 
-        const currentCart =
-            JSON.parse(
-                localStorage.getItem("cart")
-            ) || [];
+            if (!user || !user.id) {
 
+                await Swal.fire({
 
-        if (!currentCustomer) {
+                    icon: "warning",
 
-            Swal.fire({
+                    title: "Login Required",
 
-                icon: "error",
+                    text:
+                        "Please login before placing your order."
 
-                title:
-                    "Customer Details Missing",
-
-                text:
-                    "Please enter customer details first."
-
-            });
-
-            return;
-
-        }
+                });
 
 
-        if (currentCart.length === 0) {
+                confirmBtn.disabled =
+                    false;
 
-            Swal.fire({
-
-                icon: "warning",
-
-                title: "Cart is Empty",
-
-                text:
-                    "Please add products before placing an order."
-
-            });
-
-            return;
-
-        }
+                confirmBtn.innerText =
+                    "Confirm Order";
 
 
-        // ----------------------------------------------
-        // DISABLE BUTTON
-        // ----------------------------------------------
-
-        confirmBtn.disabled = true;
-
-        confirmBtn.innerText =
-            "Placing Order...";
+                window.location.href =
+                    "login.html";
 
 
-        // ----------------------------------------------
-        // CALCULATE SUBTOTAL
-        // ----------------------------------------------
+                return;
 
-        let orderSubtotal = 0;
+            }
 
 
-        currentCart.forEach((item) => {
+            // ==========================================
+            // CORRECT USER ID
+            // ==========================================
 
-            const quantity =
-                Number(item.quantity) || 1;
-
-            const price =
-                Number(item.price) || 0;
-
-            orderSubtotal +=
-                price * quantity;
-
-        });
+            const userId =
+                user.id;
 
 
-        // ----------------------------------------------
-        // FINAL TOTAL
-        // ----------------------------------------------
-
-        const orderFinalTotal =
-            orderSubtotal - discount;
-
-
-        // ----------------------------------------------
-        // USER
-        // ----------------------------------------------
-
-        const user =
-            JSON.parse(
-                localStorage.getItem("user")
+            console.log(
+                "Correct User ID:",
+                userId
             );
 
 
-        // ----------------------------------------------
-        // CREATE ORDER OBJECT
-        // ----------------------------------------------
+            // ==========================================
+            // DISABLE BUTTON
+            // ==========================================
 
-        const order = {
+            confirmBtn.disabled =
+                true;
 
-            userId:
-                user ? user._id : "",
-
-            customerName:
-                currentCustomer.name || "",
-
-            phone:
-                currentCustomer.phone || "",
-
-            email:
-                currentCustomer.email || "",
-
-            address:
-                currentCustomer.address || "",
-
-            city:
-                currentCustomer.city || "",
-
-            state:
-                currentCustomer.state || "",
-
-            pincode:
-                currentCustomer.pincode || "",
+            confirmBtn.innerText =
+                "Placing Order...";
 
 
-            items:
-                currentCart.map((item) => ({
+            // ==========================================
+            // CALCULATE SUBTOTAL
+            // ==========================================
 
-                    productId:
-                        item._id,
-
-                    productName:
-                        item.name,
-
-                    price:
-                        Number(item.price) || 0,
-
-                    quantity:
-                        Number(item.quantity) || 1,
-
-                    image:
-                        item.image || ""
-
-                })),
+            let orderSubtotal = 0;
 
 
-            totalPrice:
-                orderFinalTotal,
+            currentCart.forEach(
+                (item) => {
+
+                    const quantity =
+                        Number(
+                            item.quantity
+                        ) || 1;
 
 
-            couponCode:
-                appliedCouponCode || ""
-
-        };
-
-
-        console.log(
-            "Sending Order:",
-            order
-        );
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
 
 
-        // ==================================================
-        // SAVE ORDER
-        // ==================================================
+                    orderSubtotal +=
+                        price * quantity;
 
-        try {
+                }
+            );
 
-            const response =
-                await fetch(
-                    "https://shopsphere-sedh.onrender.com/api/orders",
-                    {
 
-                        method: "POST",
+            // ==========================================
+            // FINAL TOTAL
+            // ==========================================
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
+            const orderFinalTotal =
+                Math.max(
+                    0,
+                    orderSubtotal - discount
+                );
 
-                        body:
-                            JSON.stringify(order)
+
+            // ==========================================
+            // CREATE ORDER
+            // ==========================================
+
+            const order = {
+
+                // IMPORTANT
+                // Use user.id here
+
+                userId: userId,
+
+
+                customerName:
+                    currentCustomer.name ||
+                    "",
+
+
+                phone:
+                    currentCustomer.phone ||
+                    "",
+
+
+                email:
+                    currentCustomer.email ||
+                    "",
+
+
+                address:
+                    currentCustomer.address ||
+                    "",
+
+
+                city:
+                    currentCustomer.city ||
+                    "",
+
+
+                state:
+                    currentCustomer.state ||
+                    "",
+
+
+                pincode:
+                    currentCustomer.pincode ||
+                    "",
+
+
+                items:
+
+                    currentCart.map(
+                        (item) => ({
+
+                            productId:
+                                item._id ||
+                                item.id ||
+                                "",
+
+
+                            productName:
+                                item.name ||
+                                "Product",
+
+
+                            price:
+                                Number(
+                                    item.price
+                                ) || 0,
+
+
+                            quantity:
+                                Number(
+                                    item.quantity
+                                ) || 1,
+
+
+                            image:
+                                item.image ||
+                                ""
+
+                        })
+                    ),
+
+
+                totalPrice:
+                    orderFinalTotal,
+
+
+                couponCode:
+                    appliedCouponCode ||
+                    ""
+
+            };
+
+
+            console.log(
+                "Order being sent:",
+                order
+            );
+
+
+            // ==========================================
+            // SAVE ORDER
+            // ==========================================
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://shopsphere-sedh.onrender.com/api/orders",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    order
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Order API Response:",
+                    result
+                );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+
+                        result.message ||
+                        "Order could not be placed."
+
+                    );
+
+                }
+
+
+                // ======================================
+                // SERVER ORDER
+                // ======================================
+
+                const savedOrder =
+                    result.data ||
+                    {};
+
+
+                const savedDiscount =
+                    Number(
+                        savedOrder.discount
+                    ) || discount;
+
+
+                const savedTotal =
+                    Number(
+                        savedOrder.totalPrice
+                    ) || orderFinalTotal;
+
+
+                // ======================================
+                // WHATSAPP MESSAGE
+                // ======================================
+
+                let message =
+                    `🛍️ *New Order - ShopSphere*\n\n`;
+
+
+                message +=
+                    `👤 *Customer Details*\n`;
+
+
+                message +=
+                    `Name : ${currentCustomer.name || ""}\n`;
+
+
+                message +=
+                    `Phone : ${currentCustomer.phone || ""}\n`;
+
+
+                message +=
+                    `Email : ${currentCustomer.email || ""}\n`;
+
+
+                message +=
+                    `Address : ${currentCustomer.address || ""}\n`;
+
+
+                message +=
+                    `City : ${currentCustomer.city || ""}\n`;
+
+
+                message +=
+                    `State : ${currentCustomer.state || ""}\n`;
+
+
+                message +=
+                    `Pincode : ${currentCustomer.pincode || ""}\n\n`;
+
+
+                message +=
+                    `📦 *Products*\n\n`;
+
+
+                currentCart.forEach(
+                    (item, index) => {
+
+                        const quantity =
+                            Number(
+                                item.quantity
+                            ) || 1;
+
+
+                        const price =
+                            Number(
+                                item.price
+                            ) || 0;
+
+
+                        const subtotal =
+                            price * quantity;
+
+
+                        message +=
+                            `${index + 1}. ${item.name || "Product"}\n`;
+
+
+                        message +=
+                            `Qty : ${quantity}\n`;
+
+
+                        message +=
+                            `Price : ₹${price}\n`;
+
+
+                        message +=
+                            `Subtotal : ₹${subtotal}\n\n`;
 
                     }
                 );
 
 
-            const result =
-                await response.json();
+                message +=
+                    `🎁 Discount : ₹${savedDiscount}\n`;
 
 
-            console.log(
-                "Order API Response:",
-                result
-            );
+                if (savedOrder.couponCode) {
+
+                    message +=
+                        `🎟️ Coupon : ${savedOrder.couponCode}\n`;
+
+                }
 
 
-            if (!response.ok) {
+                message +=
+                    `💰 *Grand Total : ₹${savedTotal}*`;
 
-                throw new Error(
-                    result.message ||
-                    "Order could not be placed."
+
+                // ======================================
+                // WHATSAPP
+                // ======================================
+
+                const whatsappPhone =
+                    "919026133685";
+
+
+                const whatsappURL =
+                    `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+
+
+                console.log(
+                    "WhatsApp URL:",
+                    whatsappURL
                 );
 
-            }
 
+                window.open(
+                    whatsappURL,
+                    "_blank"
+                );
 
-            // ------------------------------------------
-            // USE SERVER TOTAL
-            // ------------------------------------------
 
-            const savedOrder =
-                result.data;
+                // ======================================
+                // CLEAR CART
+                // ======================================
 
+                localStorage.removeItem(
+                    "cart"
+                );
 
-            const savedDiscount =
-                Number(savedOrder.discount) || 0;
 
+                // ======================================
+                // SUCCESS
+                // ======================================
 
-            const savedTotal =
-                Number(savedOrder.totalPrice) || 0;
+                await Swal.fire({
 
+                    icon: "success",
 
-            // ==================================================
-            // WHATSAPP MESSAGE
-            // ==================================================
+                    title:
+                        "Order Placed!",
 
-            let message =
-                `🛍️ *New Order - ShopSphere*\n\n`;
+                    text:
+                        "Your order has been placed successfully.",
 
+                    timer: 1500,
 
-            message +=
-                `👤 *Customer Details*\n`;
+                    showConfirmButton: false
 
-            message +=
-                `Name : ${currentCustomer.name || ""}\n`;
+                });
 
-            message +=
-                `Phone : ${currentCustomer.phone || ""}\n`;
 
-            message +=
-                `Email : ${currentCustomer.email || ""}\n`;
-
-            message +=
-                `Address : ${currentCustomer.address || ""}\n`;
-
-            message +=
-                `City : ${currentCustomer.city || ""}\n`;
-
-            message +=
-                `State : ${currentCustomer.state || ""}\n`;
-
-            message +=
-                `Pincode : ${currentCustomer.pincode || ""}\n\n`;
-
-
-            message +=
-                `📦 *Products*\n\n`;
-
-
-            currentCart.forEach((item, index) => {
-
-                const quantity =
-                    Number(item.quantity) || 1;
-
-                const price =
-                    Number(item.price) || 0;
-
-                const subtotal =
-                    price * quantity;
-
-
-                message +=
-                    `${index + 1}. ${item.name}\n`;
-
-                message +=
-                    `Qty : ${quantity}\n`;
-
-                message +=
-                    `Price : ₹${price}\n`;
-
-                message +=
-                    `Subtotal : ₹${subtotal}\n\n`;
-
-            });
-
-
-            message +=
-                `🎁 Discount : ₹${savedDiscount}\n`;
-
-
-            if (savedOrder.couponCode) {
-
-                message +=
-                    `🎟️ Coupon : ${savedOrder.couponCode}\n`;
-
-            }
-
-
-            message +=
-                `💰 *Grand Total : ₹${savedTotal}*`;
-
-
-            // ==================================================
-            // WHATSAPP
-            // ==================================================
-
-            const whatsappPhone =
-                "919026133685";
-
-
-            const whatsappURL =
-                `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
-
-
-            console.log(
-                "WhatsApp URL:",
-                whatsappURL
-            );
-
-
-            // Open WhatsApp
-            window.open(
-                whatsappURL,
-                "_blank"
-            );
-
-
-            // ==================================================
-            // CLEAR CART
-            // ==================================================
-
-            localStorage.removeItem("cart");
-
-
-            // ==================================================
-            // SUCCESS
-            // ==================================================
-
-            Swal.fire({
-
-                icon: "success",
-
-                title: "Order Placed!",
-
-                text:
-                    "Your order has been placed successfully.",
-
-                timer: 1500,
-
-                showConfirmButton: false
-
-            });
-
-
-            // ==================================================
-            // THANK YOU
-            // ==================================================
-
-            setTimeout(() => {
+                // ======================================
+                // THANK YOU
+                // ======================================
 
                 window.location.href =
                     "thankyou.html";
 
-            }, 1500);
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "❌ Order Error:",
+                    error
+                );
+
+
+                confirmBtn.disabled =
+                    false;
+
+
+                confirmBtn.innerText =
+                    "Confirm Order";
+
+
+                Swal.fire({
+
+                    icon: "error",
+
+                    title:
+                        "Order Failed",
+
+                    text:
+                        error.message ||
+                        "Unable to place order."
+
+                });
+
+            }
 
         }
-
-
-        catch (error) {
-
-            console.error(
-                "❌ Order Error:",
-                error
-            );
-
-
-            confirmBtn.disabled = false;
-
-            confirmBtn.innerText =
-                "Confirm Order";
-
-
-            Swal.fire({
-
-                icon: "error",
-
-                title: "Order Failed",
-
-                text:
-                    error.message ||
-                    "Unable to place order."
-
-            });
-
-        }
-
-    });
+    );
 
 }

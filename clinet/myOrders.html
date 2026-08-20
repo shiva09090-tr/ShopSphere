@@ -3,23 +3,1756 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>My Orders</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link rel="stylesheet" href="css/myOrders.css">
+    <title>My Orders - ShopSphere</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f6fa;
+
+            color: #222;
+
+            padding: 30px;
+
+        }
+
+
+        .container {
+
+            max-width: 1000px;
+
+            margin: auto;
+
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .header h1 {
+
+            font-size: 30px;
+
+        }
+
+
+        .back-btn {
+
+            border: none;
+
+            background: #111;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+        }
+
+
+        .back-btn:hover {
+
+            background: #333;
+
+        }
+
+
+        /* =========================
+           ORDERS CONTAINER
+        ========================= */
+
+        #ordersContainer {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 22px;
+
+        }
+
+
+        /* =========================
+           ORDER CARD
+        ========================= */
+
+        .order-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,0.07);
+
+        }
+
+
+        .order-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .order-id {
+
+            font-size: 14px;
+
+            color: #777;
+
+            margin-top: 5px;
+
+            word-break: break-all;
+
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            background: #fff3cd;
+
+            color: #856404;
+
+            white-space: nowrap;
+
+        }
+
+
+        .status.confirmed {
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+        }
+
+
+        .status.processing {
+
+            background: #e0e7ff;
+
+            color: #4338ca;
+
+        }
+
+
+        .status.packed {
+
+            background: #f3e8ff;
+
+            color: #7e22ce;
+
+        }
+
+
+        .status.shipped {
+
+            background: #ede9fe;
+
+            color: #6d28d9;
+
+        }
+
+
+        .status.out-for-delivery {
+
+            background: #fef3c7;
+
+            color: #92400e;
+
+        }
+
+
+        .status.delivered {
+
+            background: #dcfce7;
+
+            color: #166534;
+
+        }
+
+
+        .status.cancelled {
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+        }
+
+
+        /* =========================
+           ORDER INFORMATION
+        ========================= */
+
+        .order-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .info-box {
+
+            background: #f7f7f7;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+        }
+
+
+        .info-box small {
+
+            display: block;
+
+            color: #777;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .info-box strong {
+
+            font-size: 15px;
+
+            word-break: break-word;
+
+        }
+
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .products-title {
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .products-list {
+
+            background: #fafafa;
+
+            border-radius: 10px;
+
+            padding: 5px 15px;
+
+        }
+
+
+        .product {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 14px 0;
+
+            border-bottom:
+                1px solid #eee;
+
+        }
+
+
+        .product:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .product img {
+
+            width: 65px;
+
+            height: 65px;
+
+            object-fit: cover;
+
+            border-radius: 9px;
+
+            background: #eee;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .product-image-placeholder {
+
+            width: 65px;
+
+            height: 65px;
+
+            border-radius: 9px;
+
+            background: #eee;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .product-info {
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .product-name {
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+
+            word-break: break-word;
+
+        }
+
+
+        .product-meta {
+
+            color: #777;
+
+            font-size: 13px;
+
+        }
+
+
+        .product-price {
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =========================
+           TOTAL
+        ========================= */
+
+        .total {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            border-top:
+                1px solid #ddd;
+
+            margin-top: 15px;
+
+            padding-top: 18px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================
+           TRACKING
+        ========================= */
+
+        .tracking-title {
+
+            margin-top: 25px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .timeline {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            position: relative;
+
+            margin:
+                10px 0 25px;
+
+        }
+
+
+        .timeline::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 17px;
+
+            left: 5%;
+
+            width: 90%;
+
+            height: 4px;
+
+            background: #ddd;
+
+            z-index: 0;
+
+        }
+
+
+        .timeline-step {
+
+            position: relative;
+
+            z-index: 1;
+
+            text-align: center;
+
+            width: 16%;
+
+        }
+
+
+        .circle {
+
+            width: 35px;
+
+            height: 35px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            background: #ddd;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+        }
+
+
+        .timeline-step.completed .circle {
+
+            background: #22c55e;
+
+        }
+
+
+        .timeline-step.current .circle {
+
+            background: #2563eb;
+
+            box-shadow:
+                0 0 0 5px
+                rgba(37,99,235,0.12);
+
+        }
+
+
+        .timeline-step span {
+
+            display: block;
+
+            margin-top: 8px;
+
+            font-size: 11px;
+
+            color: #777;
+
+        }
+
+
+        .timeline-step.current span {
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================
+           CANCELLED TIMELINE
+        ========================= */
+
+        .cancelled-timeline {
+
+            justify-content: flex-start;
+
+            gap: 80px;
+
+        }
+
+
+        .cancelled-timeline::before {
+
+            width: 120px;
+
+            left: 17px;
+
+        }
+
+
+        .cancelled-timeline
+        .timeline-step {
+
+            width: auto;
+
+            min-width: 70px;
+
+        }
+
+
+        .cancelled-timeline
+        .timeline-step.current
+        .circle {
+
+            background: #dc2626;
+
+        }
+
+
+        .cancelled-timeline
+        .timeline-step.current
+        span {
+
+            color: #dc2626;
+
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .track-btn {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #111;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 15px;
+
+        }
+
+
+        .track-btn:hover {
+
+            background: #333;
+
+        }
+
+
+        /* =========================
+           EMPTY / ERROR
+        ========================= */
+
+        .empty {
+
+            background: white;
+
+            padding: 50px;
+
+            border-radius: 16px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0,0,0,0.07);
+
+        }
+
+
+        .empty h2 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:700px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+
+            .header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+
+            }
+
+
+            .order-info {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .order-top {
+
+                flex-direction: column;
+
+            }
+
+
+            .timeline {
+
+                overflow-x: auto;
+
+                justify-content: flex-start;
+
+                gap: 15px;
+
+                padding-bottom: 10px;
+
+            }
+
+
+            .timeline-step {
+
+                min-width: 85px;
+
+            }
+
+
+            .timeline::before {
+
+                display: none;
+
+            }
+
+
+            .product-price {
+
+                font-size: 13px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<h1>My Orders</h1>
 
-<div id="ordersContainer"></div>
+<div class="container">
 
-<script src="js/myOrders.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>
+            📦 My Orders
+        </h1>
+
+
+        <button
+            class="back-btn"
+            onclick="history.back()"
+        >
+            ← Back
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         ORDERS
+    ========================= -->
+
+    <div id="ordersContainer"></div>
+
+
+</div>
+
+
+<script>
+
+
+// =====================================================
+// API
+// =====================================================
+
+const API =
+    "https://shopsphere-sedh.onrender.com/api/admin/orders";
+
+
+// =====================================================
+// ELEMENT
+// =====================================================
+
+const ordersContainer =
+    document.getElementById(
+        "ordersContainer"
+    );
+
+
+// =====================================================
+// LOAD ORDERS
+// =====================================================
+
+async function loadOrders() {
+
+
+    ordersContainer.innerHTML = `
+
+        <div class="empty">
+
+            <h2>
+                ⏳ Loading Orders...
+            </h2>
+
+            <p
+                style="
+                    margin-top:10px;
+                    color:#777;
+                "
+            >
+                Please wait...
+            </p>
+
+        </div>
+
+    `;
+
+
+    try {
+
+
+        const response =
+            await fetch(API);
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "📦 My Orders Response:",
+            result
+        );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            throw new Error(
+
+                result.message ||
+                "Unable to load orders"
+
+            );
+
+        }
+
+
+        const orders =
+            result.data || [];
+
+
+        // =================================================
+        // NO ORDERS
+        // =================================================
+
+        if (
+            orders.length === 0
+        ) {
+
+            ordersContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <h2>
+                        📦 No Orders Yet
+                    </h2>
+
+                    <p
+                        style="
+                            margin-top:10px;
+                            color:#777;
+                        "
+                    >
+                        You haven't placed any
+                        orders yet.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        // =================================================
+        // RENDER ORDERS
+        // =================================================
+
+        ordersContainer.innerHTML =
+
+            orders.map(order => {
+
+
+                const status =
+                    order.status ||
+                    "Pending";
+
+
+                const date =
+                    order.createdAt
+
+                    ?
+
+                    new Date(
+                        order.createdAt
+                    ).toLocaleString(
+                        "en-IN"
+                    )
+
+                    :
+
+                    "—";
+
+
+                // =================================================
+                // PRODUCTS
+                // =================================================
+
+                let productsHTML = "";
+
+
+                if (
+                    order.items &&
+                    order.items.length > 0
+                ) {
+
+
+                    productsHTML = `
+
+                        <div
+                            class="products-list"
+                        >
+
+                            ${
+                                order.items
+                                    .map(
+                                        item => {
+
+                                            const image =
+                                                item.image ||
+                                                "";
+
+
+                                            const name =
+                                                item.productName ||
+                                                "Product";
+
+
+                                            const quantity =
+                                                Number(
+                                                    item.quantity
+                                                ) || 1;
+
+
+                                            const price =
+                                                Number(
+                                                    item.price
+                                                ) || 0;
+
+
+                                            return `
+
+                                                <div
+                                                    class="product"
+                                                >
+
+                                                    ${
+                                                        image
+
+                                                        ?
+
+                                                        `
+
+                                                            <img
+                                                                src="${image}"
+                                                                alt="${escapeHTML(name)}"
+                                                                onerror="
+                                                                    this.style.display='none'
+                                                                "
+                                                            >
+
+                                                        `
+
+                                                        :
+
+                                                        `
+
+                                                            <div
+                                                                class="
+                                                                    product-image-placeholder
+                                                                "
+                                                            >
+                                                                🛍️
+                                                            </div>
+
+                                                        `
+                                                    }
+
+
+                                                    <div
+                                                        class="
+                                                            product-info
+                                                        "
+                                                    >
+
+                                                        <div
+                                                            class="
+                                                                product-name
+                                                            "
+                                                        >
+                                                            ${escapeHTML(name)}
+                                                        </div>
+
+
+                                                        <div
+                                                            class="
+                                                                product-meta
+                                                            "
+                                                        >
+                                                            Quantity:
+                                                            ${quantity}
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div
+                                                        class="
+                                                            product-price
+                                                        "
+                                                    >
+                                                        ₹${price * quantity}
+                                                    </div>
+
+                                                </div>
+
+                                            `;
+
+                                        }
+                                    )
+                                    .join("")
+                            }
+
+                        </div>
+
+                    `;
+
+                }
+
+                else {
+
+
+                    productsHTML = `
+
+                        <p
+                            style="
+                                color:#777;
+                                padding:15px 0;
+                            "
+                        >
+                            No products found.
+                        </p>
+
+                    `;
+
+                }
+
+
+                // =================================================
+                // ORDER CARD
+                // =================================================
+
+                return `
+
+                    <div
+                        class="order-card"
+                    >
+
+
+                        <!-- TOP -->
+
+                        <div
+                            class="order-top"
+                        >
+
+
+                            <div>
+
+                                <h2>
+                                    📦 Order
+                                </h2>
+
+
+                                <div
+                                    class="order-id"
+                                >
+                                    Order ID:
+                                    ${order._id}
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="
+                                    status
+                                    ${statusClass(status)}
+                                "
+                            >
+                                ${escapeHTML(status)}
+                            </span>
+
+
+                        </div>
+
+
+                        <!-- INFO -->
+
+                        <div
+                            class="order-info"
+                        >
+
+
+                            <div
+                                class="info-box"
+                            >
+
+                                <small>
+                                    Customer
+                                </small>
+
+                                <strong>
+                                    ${
+                                        escapeHTML(
+                                            order.customerName ||
+                                            "—"
+                                        )
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="info-box"
+                            >
+
+                                <small>
+                                    Phone
+                                </small>
+
+                                <strong>
+                                    ${
+                                        escapeHTML(
+                                            order.phone ||
+                                            "—"
+                                        )
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="info-box"
+                            >
+
+                                <small>
+                                    Order Date
+                                </small>
+
+                                <strong>
+                                    ${date}
+                                </strong>
+
+                            </div>
+                            <div class="info-box">
+
+    <small>
+        Expected Delivery
+    </small>
+
+    <strong>
+
+        ${
+            order.deliveryDate
+            ?
+            new Date(
+                order.deliveryDate
+            ).toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                }
+            )
+            :
+            "Not Set"
+        }
+
+    </strong>
+
+</div>
+
+
+                            <div
+                                class="info-box"
+                            >
+
+                                <small>
+                                    Total
+                                </small>
+
+                                <strong>
+                                    ₹${
+                                        Number(
+                                            order.totalPrice
+                                        ) || 0
+                                    }
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- PRODUCTS -->
+
+                        <h3
+                            class="products-title"
+                        >
+                            📦 Products
+                        </h3>
+
+
+                        ${productsHTML}
+
+
+                        <!-- TOTAL -->
+
+                        <div
+                            class="total"
+                        >
+
+                            <span>
+                                Grand Total
+                            </span>
+
+
+                            <span>
+                                ₹${
+                                    Number(
+                                        order.totalPrice
+                                    ) || 0
+                                }
+                            </span>
+
+                        </div>
+
+
+                        <!-- TRACKING -->
+
+                        <h3
+                            class="tracking-title"
+                        >
+                            🚚 Order Tracking
+                        </h3>
+
+
+                        ${createTimeline(status)}
+
+
+                        <!-- TRACK BUTTON -->
+
+                        <div
+                            class="actions"
+                        >
+
+                            <button
+                                class="track-btn"
+                                onclick="
+                                    trackOrder(
+                                        '${order._id}',
+                                        '${escapeJS(
+                                            order.phone || ""
+                                        )}'
+                                    )
+                                "
+                            >
+                                🔍 Track Order
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+    }
+
+    catch(error) {
+
+
+        console.error(
+            "❌ My Orders Error:",
+            error
+        );
+
+
+        ordersContainer.innerHTML = `
+
+            <div class="empty">
+
+                <h2>
+                    ❌ Unable to Load Orders
+                </h2>
+
+
+                <p
+                    style="
+                        margin-top:10px;
+                        color:#777;
+                    "
+                >
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// =====================================================
+// STATUS CLASS
+// =====================================================
+
+function statusClass(status) {
+
+
+    const value =
+        String(status || "")
+            .toLowerCase()
+            .trim();
+
+
+    if (
+        value === "delivered"
+    ) {
+
+        return "delivered";
+
+    }
+
+
+    if (
+        value === "cancelled"
+    ) {
+
+        return "cancelled";
+
+    }
+
+
+    if (
+        value === "shipped"
+    ) {
+
+        return "shipped";
+
+    }
+
+
+    if (
+        value === "out for delivery"
+    ) {
+
+        return "out-for-delivery";
+
+    }
+
+
+    if (
+        value === "confirmed"
+    ) {
+
+        return "confirmed";
+
+    }
+
+
+    if (
+        value === "processing"
+    ) {
+
+        return "processing";
+
+    }
+
+
+    if (
+        value === "packed"
+    ) {
+
+        return "packed";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+// =====================================================
+// CREATE TIMELINE
+// =====================================================
+
+function createTimeline(status) {
+
+
+    const statuses = [
+
+        "Pending",
+
+        "Confirmed",
+
+        "Packed",
+
+        "Shipped",
+
+        "Out for Delivery",
+
+        "Delivered"
+
+    ];
+
+
+    // =================================================
+    // CANCELLED
+    // =================================================
+
+    if (
+        status === "Cancelled"
+    ) {
+
+        return `
+
+            <div
+                class="
+                    timeline
+                    cancelled-timeline
+                "
+            >
+
+
+                <div
+                    class="
+                        timeline-step
+                        completed
+                    "
+                >
+
+                    <div
+                        class="circle"
+                    >
+                        ✓
+                    </div>
+
+
+                    <span>
+                        Order Placed
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="
+                        timeline-step
+                        current
+                    "
+                >
+
+                    <div
+                        class="circle"
+                    >
+                        ✕
+                    </div>
+
+
+                    <span>
+                        Cancelled
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        `;
+
+    }
+
+
+    let currentIndex =
+        statuses.indexOf(status);
+
+
+    // If unknown status
+    // keep Pending active
+
+    if (
+        currentIndex === -1
+    ) {
+
+        currentIndex = 0;
+
+    }
+
+
+    return `
+
+        <div
+            class="timeline"
+        >
+
+            ${
+                statuses
+                    .map(
+                        (item, index) => {
+
+
+                            let className =
+                                "timeline-step";
+
+
+                            if (
+                                index <
+                                currentIndex
+                            ) {
+
+                                className +=
+                                    " completed";
+
+                            }
+
+
+                            else if (
+                                index ===
+                                currentIndex
+                            ) {
+
+                                className +=
+                                    " current";
+
+                            }
+
+
+                            return `
+
+                                <div
+                                    class="${className}"
+                                >
+
+                                    <div
+                                        class="circle"
+                                    >
+
+                                        ${
+                                            index <=
+                                            currentIndex
+                                                ? "✓"
+                                                : ""
+                                        }
+
+                                    </div>
+
+
+                                    <span>
+                                        ${item}
+                                    </span>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("")
+            }
+
+        </div>
+
+    `;
+
+}
+
+
+// =====================================================
+// TRACK ORDER
+// =====================================================
+
+function trackOrder(orderId, phone) {
+
+    localStorage.setItem(
+        "trackOrderId",
+        orderId
+    );
+
+    localStorage.setItem(
+        "trackOrderPhone",
+        phone
+    );
+
+    window.location.href =
+        "ordertracking.html";
+}
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHTML(value) {
+
+
+    return String(value ?? "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+// =====================================================
+// ESCAPE JAVASCRIPT
+// =====================================================
+
+function escapeJS(value) {
+
+
+    return String(value ?? "")
+
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+
+        .replace(
+            /'/g,
+            "\\'"
+        )
+
+        .replace(
+            /"/g,
+            '\\"'
+        )
+
+        .replace(
+            /\n/g,
+            "\\n"
+        )
+
+        .replace(
+            /\r/g,
+            "\\r"
+        );
+
+}
+
+
+// =====================================================
+// START
+// =====================================================
+
+loadOrders();
+
+</script>
+
 
 </body>
 

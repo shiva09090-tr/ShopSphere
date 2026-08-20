@@ -2,80 +2,115 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
 
-    userId:{
-        type:String
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: false
     },
 
-    customerName:{
-        type:String,
-        required:true
+    customerName: {
+        type: String,
+        required: true
     },
 
-    phone:{
-        type:String,
-        required:true
+    phone: {
+        type: String,
+        required: true
     },
 
-    email:{
-        type:String
+    email: {
+        type: String,
+        default: ""
     },
 
-    address:{
-        type:String
+    address: {
+        type: String,
+        default: ""
     },
 
-    city:{
-        type:String
+    city: {
+        type: String,
+        default: ""
     },
 
-    state:{
-        type:String
+    state: {
+        type: String,
+        default: ""
     },
 
-    pincode:{
-        type:String
+    pincode: {
+        type: String,
+        default: ""
     },
 
-    items:[
+    items: [
         {
-            productId:String,
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            },
 
-            productName:String,
+            productName: {
+                type: String
+            },
 
-            price:Number,
+            price: {
+                type: Number
+            },
 
-            quantity:Number,
+            quantity: {
+                type: Number
+            },
 
-            image:String
+            image: {
+                type: String
+            }
         }
     ],
 
-    totalPrice:{
-        type:Number,
-        required:true
+    totalPrice: {
+        type: Number,
+        required: true
     },
+
     discount: {
-    type: Number,
-    default: 0
+        type: Number,
+        default: 0
     },
+
     couponCode: {
-    type: String,
-    default: ""
+        type: String,
+        default: ""
     },
 
-
-    status:{
-        type:String,
-        default:"Pending"
+    status: {
+        type: String,
+        enum: [
+            "Pending",
+            "Confirmed",
+            "Packed",
+            "Processing",
+            "Shipped",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled"
+        ],
+        default: "Pending"
     },
 
-    paymentMethod:{
-        type:String,
-        default:"WhatsApp"
+    paymentMethod: {
+        type: String,
+        default: "WhatsApp"
+    },
+
+    // ADMIN SETS THIS DATE
+    deliveryDate: {
+        type: Date,
+        default: null
     }
 
-},{
-    timestamps:true
+}, {
+    timestamps: true
 });
 
 const Order =

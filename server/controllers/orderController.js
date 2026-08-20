@@ -2,13 +2,11 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Coupon = require("../models/Coupon");
 
-
 // =====================================================
 // CREATE ORDER
 // =====================================================
 
 const createOrder = async (req, res) => {
-
     try {
 
         const {
@@ -16,10 +14,8 @@ const createOrder = async (req, res) => {
             ...orderData
         } = req.body;
 
-
         let discount = 0;
         let coupon = null;
-
 
         // =================================================
         // CHECK COUPON
@@ -27,150 +23,96 @@ const createOrder = async (req, res) => {
 
         if (couponCode) {
 
-            const code =
-                couponCode
-                    .trim()
-                    .toUpperCase();
+            const code = couponCode.trim().toUpperCase();
 
+            coupon = await Coupon.findOne({
+                code: code
+            });
 
-            coupon =
-                await Coupon.findOne({
-                    code: code
-                });
-
-
-            // Coupon does not exist
             if (!coupon) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "Invalid coupon code"
-
+                    message: "Invalid coupon code"
                 });
-
             }
 
-
-            // Coupon inactive
             if (!coupon.active) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "This coupon is inactive"
-
+                    message: "This coupon is inactive"
                 });
-
             }
 
-
-            // Coupon expired
             if (
                 new Date() >
                 new Date(coupon.expiryDate)
             ) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "This coupon has expired"
-
+                    message: "This coupon has expired"
                 });
-
             }
 
-
-            // Usage limit reached
             if (
                 coupon.usedCount >=
                 coupon.usageLimit
             ) {
-
                 return res.status(400).json({
-
                     success: false,
-
-                    message:
-                        "Coupon usage limit reached"
-
+                    message: "Coupon usage limit reached"
                 });
-
             }
 
+        }
 
-            // =================================================
-            // CHECK PRODUCTS
-            // =================================================
+        // =================================================
+        // CHECK PRODUCTS
+        // =================================================
 
-            if (
-                !orderData.items ||
-                orderData.items.length === 0
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Order must contain products"
-
-                });
-
-            }
-
-
-            // =================================================
-            // CALCULATE SUBTOTAL
-            // =================================================
-
-            let subtotal = 0;
-
-
-            orderData.items.forEach(item => {
-
-                const price =
-                    Number(item.price) || 0;
-
-                const quantity =
-                    Number(item.quantity) || 1;
-
-                subtotal +=
-                    price * quantity;
-
+        if (
+            !orderData.items ||
+            orderData.items.length === 0
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Order must contain products"
             });
+        }
 
+        // =================================================
+        // CALCULATE SUBTOTAL
+        // =================================================
 
-            // =================================================
-            // MINIMUM ORDER CHECK
-            // =================================================
+        let subtotal = 0;
+
+        orderData.items.forEach(item => {
+
+            const price =
+                Number(item.price) || 0;
+
+            const quantity =
+                Number(item.quantity) || 1;
+
+            subtotal += price * quantity;
+
+        });
+
+        // =================================================
+        // COUPON CALCULATION
+        // =================================================
+
+        if (coupon) {
 
             if (
                 subtotal <
                 coupon.minimumOrder
             ) {
-
                 return res.status(400).json({
-
                     success: false,
-
                     message:
                         `Minimum order value is ₹${coupon.minimumOrder}`
-
                 });
-
             }
-
-
-            // =================================================
-            // CALCULATE DISCOUNT
-            // =================================================
 
             if (
                 coupon.discountType ===
@@ -182,62 +124,55 @@ const createOrder = async (req, res) => {
                     coupon.discountValue /
                     100;
 
-            }
-
-            else {
+            } else {
 
                 discount =
                     coupon.discountValue;
 
             }
 
-
-            // Discount cannot exceed subtotal
-
-            if (
-                discount >
-                subtotal
-            ) {
-
-                discount =
-                    subtotal;
-
+            if (discount > subtotal) {
+                discount = subtotal;
             }
-
-
-            // =================================================
-            // SAVE COUPON INFORMATION IN ORDER
-            // =================================================
 
             orderData.totalPrice =
                 Math.round(
                     subtotal - discount
                 );
 
-
             orderData.couponCode =
                 coupon.code;
-
 
             orderData.discount =
                 Math.round(discount);
 
+        } else {
+
+            // No coupon
+            orderData.totalPrice =
+                Math.round(subtotal);
+
+            orderData.discount = 0;
+
         }
 
+        // =================================================
+        // DEFAULT ORDER STATUS
+        // =================================================
+
+        if (!orderData.status) {
+            orderData.status = "Pending";
+        }
 
         // =================================================
-        // CREATE ORDER FIRST
+        // CREATE ORDER
         // =================================================
 
         const order =
-            await Order.create(
-                orderData
-            );
-
+            await Order.create(orderData);
 
         // =================================================
-        // INCREASE COUPON USAGE
-        // ONLY AFTER ORDER SUCCESS
+        // UPDATE COUPON USAGE
         // =================================================
 
         if (coupon) {
@@ -247,9 +182,6 @@ const createOrder = async (req, res) => {
 
                     {
                         _id: coupon._id,
-
-                        // Important:
-                        // Do not allow usage above limit
                         usedCount: {
                             $lt:
                                 coupon.usageLimit
@@ -268,33 +200,21 @@ const createOrder = async (req, res) => {
 
                 );
 
-
-            // Coupon became unavailable
-            // between validation and order creation
-
             if (!updatedCoupon) {
-
-                // Delete the order because
-                // coupon could not be consumed
 
                 await Order.findByIdAndDelete(
                     order._id
                 );
 
-
                 return res.status(400).json({
-
                     success: false,
-
                     message:
                         "Coupon usage limit reached. Please try again without the coupon."
-
                 });
 
             }
 
         }
-
 
         // =================================================
         // RESPONSE
@@ -304,15 +224,13 @@ const createOrder = async (req, res) => {
 
             success: true,
 
-            message:
-                "Order Placed",
+            message: "Order Placed",
 
             data: order
 
         });
 
     }
-
 
     catch (error) {
 
@@ -321,18 +239,15 @@ const createOrder = async (req, res) => {
             error
         );
 
-
         res.status(500).json({
 
             success: false,
 
-            message:
-                error.message
+            message: error.message
 
         });
 
     }
-
 };
 
 
@@ -344,14 +259,28 @@ const getOrders = async (req, res) => {
 
     try {
 
-        const orders =
-            await Order.find({
+        const userId =
+            req.params.userId;
 
-                userId:
-                    req.params.userId
+        let orders;
 
-            });
+        if (userId) {
 
+            orders =
+                await Order.find({
+                    userId: userId
+                }).sort({
+                    createdAt: -1
+                });
+
+        } else {
+
+            orders =
+                await Order.find({}).sort({
+                    createdAt: -1
+                });
+
+        }
 
         res.status(200).json({
 
@@ -363,35 +292,38 @@ const getOrders = async (req, res) => {
 
     }
 
-
     catch (error) {
+
+        console.error(
+            "Get Orders Error:",
+            error
+        );
 
         res.status(500).json({
 
             success: false,
 
-            message:
-                error.message
+            message: error.message
 
         });
 
     }
 
 };
-// ==========================================
+
+
+// =====================================================
 // TRACK ORDER
-// ==========================================
+// =====================================================
 
 const trackOrder = async (req, res) => {
 
     try {
 
-        const { orderId, phone } = req.body;
-
-
-        // ==========================================
-        // VALIDATION
-        // ==========================================
+        const {
+            orderId,
+            phone
+        } = req.body;
 
         if (!orderId || !phone) {
 
@@ -406,21 +338,14 @@ const trackOrder = async (req, res) => {
 
         }
 
-
-        // ==========================================
-        // FIND ORDER
-        // ==========================================
-
         const order =
             await Order.findOne({
+
                 _id: orderId,
+
                 phone: phone
+
             });
-
-
-        // ==========================================
-        // ORDER NOT FOUND
-        // ==========================================
 
         if (!order) {
 
@@ -435,11 +360,6 @@ const trackOrder = async (req, res) => {
 
         }
 
-
-        // ==========================================
-        // SUCCESS
-        // ==========================================
-
         res.status(200).json({
 
             success: true,
@@ -448,14 +368,258 @@ const trackOrder = async (req, res) => {
 
         });
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
             "Track Order Error:",
             error
         );
 
+        res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
+};
+
+
+// =====================================================
+// UPDATE ORDER STATUS
+// =====================================================
+
+const updateOrderStatus = async (req, res) => {
+
+    try {
+
+        const {
+            status
+        } = req.body;
+
+        const {
+            id
+        } = req.params;
+
+        if (!status) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Order status is required"
+
+            });
+
+        }
+
+        const allowedStatuses = [
+
+            "Pending",
+            "Confirmed",
+            "Processing",
+            "Shipped",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled"
+
+        ];
+
+        if (
+            !allowedStatuses.includes(status)
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Invalid order status"
+
+            });
+
+        }
+
+        const order =
+            await Order.findByIdAndUpdate(
+
+                id,
+
+                {
+                    status: status
+                },
+
+                {
+                    new: true,
+                    runValidators: true
+                }
+
+            );
+
+        if (!order) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Order not found"
+
+            });
+
+        }
+
+        res.status(200).json({
+
+            success: true,
+
+            message:
+                "Order status updated successfully",
+
+            data: order
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Update Order Status Error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
+};
+
+
+// =====================================================
+// UPDATE DELIVERY DATE
+// =====================================================
+
+const updateDeliveryDate = async (req, res) => {
+
+    try {
+
+        const {
+            deliveryDate
+        } = req.body;
+
+        const {
+            id
+        } = req.params;
+
+        // ==========================================
+        // VALIDATION
+        // ==========================================
+
+        if (!deliveryDate) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Delivery date is required"
+
+            });
+
+        }
+
+        // ==========================================
+        // VALIDATE DATE
+        // ==========================================
+
+        const parsedDate =
+            new Date(deliveryDate);
+
+        if (
+            isNaN(parsedDate.getTime())
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Invalid delivery date"
+
+            });
+
+        }
+
+        // ==========================================
+        // UPDATE ORDER
+        // ==========================================
+
+        const order =
+            await Order.findByIdAndUpdate(
+
+                id,
+
+                {
+                    deliveryDate:
+                        parsedDate
+                },
+
+                {
+                    new: true,
+                    runValidators: true
+                }
+
+            );
+
+        if (!order) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Order not found"
+
+            });
+
+        }
+
+        // ==========================================
+        // RESPONSE
+        // ==========================================
+
+        res.status(200).json({
+
+            success: true,
+
+            message:
+                "Delivery date updated successfully",
+
+            data: order
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Update Delivery Date Error:",
+            error
+        );
 
         res.status(500).json({
 
@@ -470,12 +634,73 @@ const trackOrder = async (req, res) => {
 
 };
 
+
+// =====================================================
+// GET ALL ORDERS
+// =====================================================
+
+const getAllOrders = async (req, res) => {
+
+    try {
+
+        const orders =
+            await Order.find({}).sort({
+
+                createdAt: -1
+
+            });
+
+        console.log(
+            "ALL ORDERS:",
+            orders
+        );
+
+        res.status(200).json({
+
+            success: true,
+
+            data: orders
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Get All Orders Error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message: error.message
+
+        });
+
+    }
+
+};
+
+
 // =====================================================
 // EXPORT
 // =====================================================
 
 module.exports = {
+
     createOrder,
+
     getOrders,
-    trackOrder
+
+    getAllOrders,
+
+    trackOrder,
+
+    updateOrderStatus,
+
+    updateDeliveryDate
+
 };

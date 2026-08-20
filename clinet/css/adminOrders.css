@@ -114,3 +114,24 @@ box-shadow:0 0 10px #ddd;
     font-size:16px;
 
 }
+.delivery-date-box {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f7f7f7;
+    border-radius: 10px;
+}
+
+.delivery-date-box label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.delivery-date-box input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+}
