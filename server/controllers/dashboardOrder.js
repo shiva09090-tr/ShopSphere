@@ -696,15 +696,20 @@ const exportOrders = async (req, res) => {
 // =====================================================
 // EXPORTS
 // =====================================================
-
 module.exports = {
 
     getOrders,
+
     changeStatus,
+
     updateDeliveryDate,
+
     deleteOrder,
+
     cancelOrder,
+
     exportOrders,
+
     getUserOrders
 
 };

@@ -1,25 +1,15 @@
 const express = require("express");
 
-const router =
-    express.Router();
-
+const router = express.Router();
 
 const {
-
     getOrders,
-
     changeStatus,
-
-    updateDeliveryDate,
-
     deleteOrder,
-
     getUserOrders,
-
     cancelOrder,
-
-    exportOrders
-
+    exportOrders,
+    updateDeliveryDate
 } = require("../controllers/dashboardOrder");
 
 
