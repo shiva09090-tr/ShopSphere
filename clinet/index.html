@@ -1,204 +1,681 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShopSphere | Online Store</title>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ShopSphere - Discover products, shop easily, track orders and enjoy a smooth online shopping experience."
+    >
+
+    <meta
+        name="theme-color"
+        content="#111111"
+    >
+
+    <title>ShopSphere | Online Store</title>
+
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
 </head>
+
+
 <body>
 
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
 <header class="top-navbar">
-    <a class="logo" href="index.html" aria-label="ShopSphere Home">
+
+
+    <!-- LOGO -->
+
+    <a
+        class="logo"
+        href="index.html"
+        aria-label="ShopSphere Home"
+    >
+
         <i class="fa-solid fa-store"></i>
-        <span>ShopSphere</span>
+
+        <span>
+            ShopSphere
+        </span>
+
     </a>
 
-    <div class="search-box">
+
+    <!-- SEARCH -->
+
+    <div
+        class="search-box"
+        role="search"
+    >
+
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search" placeholder="Search products..." autocomplete="off">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search products..."
+            autocomplete="off"
+            aria-label="Search products"
+        >
+
     </div>
+
+
+    <!-- NAV ACTIONS -->
 
     <div class="nav-actions">
 
-    <!-- USERNAME -->
-    <span id="username" class="username"></span>
+
+        <!-- USERNAME -->
+
+        <span
+            id="username"
+            class="username"
+        ></span>
 
 
-    <!-- LOGIN -->
-    <a href="login.html"
-       id="loginBtn"
-       class="nav-action-btn">
+        <!-- LOGIN -->
 
-        <i class="fa-regular fa-user"></i>
+        <a
+            href="login.html"
+            id="loginBtn"
+            class="nav-action-btn"
+        >
 
-        <span>Login</span>
+            <i class="fa-regular fa-user"></i>
 
-    </a>
+            <span>
+                Login
+            </span>
 
-
-    <!-- LOGOUT -->
-    <button
-        id="logoutBtn"
-        class="nav-action-btn logout-btn"
-        type="button"
-        style="display:none;">
-
-        <i class="fa-solid fa-right-from-bracket"></i>
-
-        <span>Logout</span>
-
-    </button>
+        </a>
 
 
-    <!-- WISHLIST -->
-    <button
-        class="icon-btn wishlist"
-        type="button"
-        aria-label="Wishlist">
+        <!-- LOGOUT -->
 
-        <i class="fa-regular fa-heart"></i>
+        <button
+            id="logoutBtn"
+            class="nav-action-btn logout-btn"
+            type="button"
+            style="display:none;"
+        >
 
-    </button>
+            <i
+                class="fa-solid fa-right-from-bracket"
+            ></i>
 
+            <span>
+                Logout
+            </span>
 
-    <!-- CART -->
-    <a
-        href="cart.html"
-        class="icon-btn cart-icon"
-        aria-label="Cart">
-
-        <i class="fa-solid fa-cart-shopping"></i>
-
-        <span id="cartCount">0</span>
-
-    </a>
+        </button>
 
 
-    <!-- MOBILE MENU -->
-    <button
-        class="mobile-toggle icon-btn"
-        id="mobileToggle"
-        type="button"
-        aria-label="Open menu">
+        <!-- WISHLIST -->
 
-        <i class="fa-solid fa-bars"></i>
+        <button
+            class="icon-btn wishlist"
+            type="button"
+            aria-label="Wishlist"
+        >
 
-    </button>
+            <i class="fa-regular fa-heart"></i>
 
-</div>
+        </button>
+
+
+        <!-- CART -->
+
+        <a
+            href="cart.html"
+            class="icon-btn cart-icon"
+            aria-label="Cart"
+        >
+
+            <i
+                class="fa-solid fa-cart-shopping"
+            ></i>
+
+            <span id="cartCount">
+                0
+            </span>
+
+        </a>
+
+
+        <!-- MOBILE MENU -->
+
+        <button
+            class="mobile-toggle icon-btn"
+            id="mobileToggle"
+            type="button"
+            aria-label="Open menu"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+
+    </div>
+
 </header>
 
-<nav class="menu-bar" id="menuBar">
-    <a href="index.html" class="active">Home</a>
-    <a href="#productsSection">Products</a>
-    <a href="myOrders.html">Orders</a>
-    <a href="#about">About</a>
-    <a href="#footer">Contact</a>
+
+
+<!-- =====================================================
+     MENU
+===================================================== -->
+
+<nav
+    class="menu-bar"
+    id="menuBar"
+    aria-label="Main navigation"
+>
+
+    <a
+        href="index.html"
+        class="active"
+    >
+        Home
+    </a>
+
+    <a href="#productsSection">
+        Products
+    </a>
+
+    <a href="myOrders.html">
+        Orders
+    </a>
+
+    <a href="#about">
+        About
+    </a>
+
+    <a href="#footer">
+        Contact
+    </a>
+
 </nav>
 
+
+
 <main>
-    <!-- Dynamic product hero: images come directly from selected products in Admin -->
-    <section class="hero" id="heroSection" aria-label="Featured products">
-        <div id="heroSlider" class="hero-slider">
-            <div class="hero-loading">Loading featured products...</div>
-        </div>
-    </section>
 
-    <section class="category-section" id="categoriesSection">
-        <div class="section-heading">
-            <span class="eyebrow">EXPLORE</span>
-            <h2>Shop By Category</h2>
-            <p>Find what you need faster.</p>
-        </div>
-        <div id="categories" class="categories"></div>
-    </section>
 
-    <section class="products-section" id="productsSection">
-        <div class="section-heading left-heading">
-            <span class="eyebrow">OUR COLLECTION</span>
-            <h2>Featured Products</h2>
-            <p>Fresh products, updated directly from your store.</p>
-        </div>
+    <!-- =================================================
+         HERO
+    ================================================== -->
 
-        <div class="filters" aria-label="Product filters">
-            <div class="filter-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchSecondary" placeholder="Search products...">
+    <section
+        class="hero"
+        id="heroSection"
+        aria-label="Featured products"
+    >
+
+        <div
+            id="heroSlider"
+            class="hero-slider"
+        >
+
+            <div class="hero-loading">
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                ></i>
+
+                Loading featured products...
+
             </div>
-            <select id="categoryFilter" title="Filter by category">
-                <option value="">All Categories</option>
-            </select>
-            <input type="number" id="minPrice" placeholder="Min ₹" min="0">
-            <input type="number" id="maxPrice" placeholder="Max ₹" min="0">
-            <select id="sortBy" title="Sort products">
-                <option value="">Sort By</option>
-                <option value="low">Price: Low → High</option>
-                <option value="high">Price: High → Low</option>
-                <option value="new">Newest First</option>
-            </select>
-            <button id="clearFilters" class="clear-filter" type="button">
-                <i class="fa-solid fa-rotate-left"></i> Clear
-            </button>
+
         </div>
 
-        <div id="resultCount" class="result-count"></div>
-        <div id="products" class="products-grid"></div>
     </section>
+
+
+
+    <!-- =================================================
+         CATEGORIES
+    ================================================== -->
+
+    <section
+        class="category-section"
+        id="categoriesSection"
+    >
+
+        <div class="section-heading">
+
+            <span class="eyebrow">
+                EXPLORE
+            </span>
+
+            <h2>
+                Shop By Category
+            </h2>
+
+            <p>
+                Find what you need faster.
+            </p>
+
+        </div>
+
+
+        <div
+            id="categories"
+            class="categories"
+        ></div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PRODUCTS
+    ================================================== -->
+
+    <section
+        class="products-section"
+        id="productsSection"
+    >
+
+        <div
+            class="section-heading left-heading"
+        >
+
+            <span class="eyebrow">
+                OUR COLLECTION
+            </span>
+
+            <h2>
+                Featured Products
+            </h2>
+
+            <p>
+                Fresh products, updated directly
+                from your store.
+            </p>
+
+        </div>
+
+
+
+        <!-- FILTERS -->
+
+        <div
+            class="filters"
+            aria-label="Product filters"
+        >
+
+
+            <!-- SEARCH -->
+
+            <div class="filter-search">
+
+                <i
+                    class="fa-solid fa-magnifying-glass"
+                ></i>
+
+                <input
+                    type="text"
+                    id="searchSecondary"
+                    placeholder="Search products..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <select
+                id="categoryFilter"
+                title="Filter by category"
+            >
+
+                <option value="">
+                    All Categories
+                </option>
+
+            </select>
+
+
+            <!-- MIN PRICE -->
+
+            <input
+                type="number"
+                id="minPrice"
+                placeholder="Min ₹"
+                min="0"
+            >
+
+
+            <!-- MAX PRICE -->
+
+            <input
+                type="number"
+                id="maxPrice"
+                placeholder="Max ₹"
+                min="0"
+            >
+
+
+            <!-- SORT -->
+
+            <select
+                id="sortBy"
+                title="Sort products"
+            >
+
+                <option value="">
+                    Sort By
+                </option>
+
+                <option value="low">
+                    Price: Low → High
+                </option>
+
+                <option value="high">
+                    Price: High → Low
+                </option>
+
+                <option value="new">
+                    Newest First
+                </option>
+
+            </select>
+
+
+            <!-- CLEAR -->
+
+            <button
+                id="clearFilters"
+                class="clear-filter"
+                type="button"
+            >
+
+                <i
+                    class="fa-solid fa-rotate-left"
+                ></i>
+
+                Clear
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- RESULT COUNT -->
+
+        <div
+            id="resultCount"
+            class="result-count"
+        ></div>
+
+
+        <!-- PRODUCTS -->
+
+        <div
+            id="products"
+            class="products-grid"
+        ></div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         OFFER
+    ================================================== -->
 
     <section class="offer">
+
+
         <div>
-            <span><i class="fa-solid fa-bolt"></i> LIMITED TIME OFFER</span>
-            <h2>Big Deals. Better Prices.</h2>
-            <p>Don't miss the products currently available in ShopSphere.</p>
+
+            <span>
+
+                <i
+                    class="fa-solid fa-bolt"
+                ></i>
+
+                LIMITED TIME OFFER
+
+            </span>
+
+
+            <h2>
+                Big Deals. Better Prices.
+            </h2>
+
+
+            <p>
+                Don't miss the products currently
+                available in ShopSphere.
+            </p>
+
+
         </div>
-        <button type="button" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">
-            Shop Now <i class="fa-solid fa-arrow-right"></i>
+
+
+        <button
+            type="button"
+            onclick="
+                document
+                    .getElementById('productsSection')
+                    .scrollIntoView({
+                        behavior:'smooth'
+                    })
+            "
+        >
+
+            Shop Now
+
+            <i
+                class="fa-solid fa-arrow-right"
+            ></i>
+
         </button>
+
+
     </section>
 
-    <section id="about" class="about-section">
+
+
+    <!-- =================================================
+         ABOUT
+    ================================================== -->
+
+    <section
+        id="about"
+        class="about-section"
+    >
+
         <div class="about-content">
-            <span class="eyebrow">ABOUT US</span>
-            <h2>Shopping made simple with ShopSphere.</h2>
-            <p>ShopSphere is an online shopping platform where you can discover products, add them to your cart and place orders easily.</p>
+
+            <span class="eyebrow">
+                ABOUT US
+            </span>
+
+
+            <h2>
+                Shopping made simple with ShopSphere.
+            </h2>
+
+
+            <p>
+                ShopSphere is an online shopping platform
+                where you can discover products, add them
+                to your cart and place orders easily.
+            </p>
+
+
             <div class="about-points">
-                <div><i class="fa-solid fa-shield-halved"></i><span>Secure shopping experience</span></div>
-                <div><i class="fa-solid fa-truck-fast"></i><span>Easy order tracking</span></div>
-                <div><i class="fa-solid fa-headset"></i><span>Customer focused service</span></div>
+
+
+                <div>
+
+                    <i
+                        class="fa-solid fa-shield-halved"
+                    ></i>
+
+                    <span>
+                        Secure shopping experience
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <i
+                        class="fa-solid fa-truck-fast"
+                    ></i>
+
+                    <span>
+                        Easy order tracking
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <i
+                        class="fa-solid fa-headset"
+                    ></i>
+
+                    <span>
+                        Customer focused service
+                    </span>
+
+                </div>
+
+
             </div>
+
+
         </div>
+
     </section>
+
+
 </main>
 
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
 <footer id="footer">
-    <div class="footer-brand"><i class="fa-solid fa-store"></i> ShopSphere</div>
-    <p>© 2026 ShopSphere. All Rights Reserved.</p>
+
+
+    <div class="footer-brand">
+
+        <i class="fa-solid fa-store"></i>
+
+        ShopSphere
+
+    </div>
+
+
+    <p>
+        © 2026 ShopSphere. All Rights Reserved.
+    </p>
+
+
 </footer>
 
-<button id="topBtn" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/app.js"></script>
-<script src="js/navbar.js"></script>
+
+<!-- BACK TO TOP -->
+
+<button
+    id="topBtn"
+    type="button"
+    aria-label="Back to top"
+>
+
+    <i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
+></script>
+
+
+<script
+    src="js/app.js"
+></script>
+
+
+<script
+    src="js/navbar.js"
+></script>
+
+
+
+<!-- =====================================================
+     VISITOR TRACKING
+===================================================== -->
+
 <script>
+
 (async function () {
+
 
     const API =
         "https://shopsphere-sedh.onrender.com/api/visitors";
 
-    // ==========================================
+
+    // =================================================
     // GET EXISTING VISITOR ID
-    // ==========================================
+    // =================================================
 
     let visitorId =
-        localStorage.getItem("shopSphereVisitorId");
+        localStorage.getItem(
+            "shopSphereVisitorId"
+        );
 
 
-    // ==========================================
+    // =================================================
     // CREATE NEW VISITOR ID
-    // ==========================================
+    // =================================================
 
     if (!visitorId) {
 
@@ -210,17 +687,20 @@
                 .toString(36)
                 .substring(2, 10);
 
+
         localStorage.setItem(
             "shopSphereVisitorId",
             visitorId
         );
+
 
         console.log(
             "🆕 New Visitor ID:",
             visitorId
         );
 
-    } else {
+    }
+    else {
 
         console.log(
             "↩️ Existing Visitor ID:",
@@ -230,20 +710,24 @@
     }
 
 
-    // ==========================================
+    // =================================================
     // GET LOGGED-IN USER
-    // ==========================================
+    // =================================================
 
     let loggedUser = null;
+
 
     try {
 
         loggedUser =
             JSON.parse(
-                localStorage.getItem("user")
+                localStorage.getItem(
+                    "user"
+                )
             );
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.log(
             "No valid logged-in user found."
@@ -252,13 +736,14 @@
     }
 
 
-    // ==========================================
+    // =================================================
     // PREPARE VISITOR DATA
-    // ==========================================
+    // =================================================
 
     const visitorData = {
 
-        visitorId: visitorId,
+        visitorId:
+            visitorId,
 
         userId:
             loggedUser?._id ||
@@ -277,19 +762,15 @@
     };
 
 
-    // ==========================================
-    // DEBUG
-    // ==========================================
-
     console.log(
         "👤 Visitor Data Being Sent:",
         visitorData
     );
 
 
-    // ==========================================
+    // =================================================
     // SEND VISITOR TO BACKEND
-    // ==========================================
+    // =================================================
 
     try {
 
@@ -297,17 +778,21 @@
             await fetch(
                 `${API}/entry`,
                 {
+
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
                         JSON.stringify(
                             visitorData
                         )
+
                 }
             );
 
@@ -332,7 +817,8 @@
         }
 
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
             "❌ Visitor Tracking Error:",
@@ -341,7 +827,12 @@
 
     }
 
+
 })();
+
 </script>
+
+
 </body>
+
 </html>
