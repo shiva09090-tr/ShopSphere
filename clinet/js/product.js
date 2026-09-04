@@ -14,11 +14,18 @@ const product = JSON.parse(
 if (!product) {
 
     Swal.fire({
+
         icon: "error",
+
         title: "Product Not Found",
+
         text: "Please select a product first."
+
     }).then(() => {
-        window.location.href = "index.html";
+
+        window.location.href =
+            "index.html";
+
     });
 
 } else {
@@ -45,27 +52,194 @@ if (!product) {
     const buttonArea =
         document.getElementById("buttonArea");
 
+    const thumbnailsContainer =
+        document.getElementById(
+            "productThumbnails"
+        );
+
 
     // ============================================
-    // IMAGE
+    // PRODUCT IMAGES
+    // ============================================
+
+    let productImages = [];
+
+
+    // New multiple-image field
+    if (
+        Array.isArray(product.images) &&
+        product.images.length > 0
+    ) {
+
+        productImages = [
+            ...product.images
+        ];
+
+    }
+
+
+    // Old single-image field
+    // Keep backward compatibility
+
+    if (
+        product.image &&
+        !productImages.includes(
+            product.image
+        )
+    ) {
+
+        productImages.unshift(
+            product.image
+        );
+
+    }
+
+
+    // Remove empty values
+
+    productImages =
+        productImages.filter(
+            image =>
+                image &&
+                String(image).trim() !== ""
+        );
+
+
+    // ============================================
+    // SHOW MAIN IMAGE
     // ============================================
 
     if (productImage) {
 
-        productImage.src =
-            product.image ||
+        const firstImage =
+            productImages[0] ||
             "https://via.placeholder.com/700x600?text=ShopSphere";
 
+
+        productImage.src =
+            firstImage;
+
+
         productImage.alt =
-            product.name || "Product";
+            product.name ||
+            "Product";
 
-        productImage.onerror = function () {
 
-            this.src =
-                "https://via.placeholder.com/700x600?text=ShopSphere";
+        productImage.onerror =
+            function () {
 
-        };
+                this.src =
+                    "https://via.placeholder.com/700x600?text=ShopSphere";
+
+            };
+
     }
+
+
+    // ============================================
+    // SHOW THUMBNAILS
+    // ============================================
+
+    function showThumbnails() {
+
+        if (!thumbnailsContainer) {
+            return;
+        }
+
+
+        thumbnailsContainer.innerHTML = "";
+
+
+        // No images
+        if (
+            productImages.length <= 1
+        ) {
+
+            return;
+
+        }
+
+
+        productImages.forEach(
+            (image, index) => {
+
+
+                const thumbnail =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                thumbnail.type =
+                    "button";
+
+
+                thumbnail.className =
+                    "product-thumbnail";
+
+
+                if (index === 0) {
+
+                    thumbnail.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                thumbnail.innerHTML = `
+
+                    <img
+                        src="${image}"
+                        alt="${product.name || "Product"} image ${index + 1}"
+                    >
+
+                `;
+
+
+                thumbnail.addEventListener(
+                    "click",
+                    function () {
+
+                        if (productImage) {
+
+                            productImage.src =
+                                image;
+
+                        }
+
+
+                        document
+                            .querySelectorAll(
+                                ".product-thumbnail"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        thumbnail.classList.add(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                thumbnailsContainer.appendChild(
+                    thumbnail
+                );
+
+            }
+        );
+
+    }
+
+
+    showThumbnails();
 
 
     // ============================================
@@ -75,7 +249,9 @@ if (!product) {
     if (productName) {
 
         productName.textContent =
-            product.name || "Product";
+            product.name ||
+            "Product";
+
     }
 
 
@@ -87,7 +263,11 @@ if (!product) {
 
         brand.textContent =
             "Brand : " +
-            (product.brand || "ShopSphere");
+            (
+                product.brand ||
+                "ShopSphere"
+            );
+
     }
 
 
@@ -100,6 +280,7 @@ if (!product) {
         description.textContent =
             product.description ||
             "Discover this quality product at ShopSphere.";
+
     }
 
 
@@ -111,8 +292,12 @@ if (!product) {
 
         price.textContent =
             "₹" +
-            Number(product.price || 0)
-                .toLocaleString("en-IN");
+            Number(
+                product.price || 0
+            ).toLocaleString(
+                "en-IN"
+            );
+
     }
 
 
@@ -123,7 +308,9 @@ if (!product) {
     if (buttonArea) {
 
         const stock =
-            Number(product.stock) || 0;
+            Number(
+                product.stock
+            ) || 0;
 
 
         // ========================================
@@ -139,8 +326,13 @@ if (!product) {
                     class="add-cart-btn"
                     id="cartBtn"
                 >
-                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <i
+                        class="fa-solid fa-cart-shopping"
+                    ></i>
+
                     Add to Cart
+
                 </button>
 
 
@@ -149,8 +341,13 @@ if (!product) {
                     class="buy-now-btn"
                     id="buyBtn"
                 >
-                    <i class="fa-solid fa-bolt"></i>
+
+                    <i
+                        class="fa-solid fa-bolt"
+                    ></i>
+
                     Buy Now
+
                 </button>
 
             `;
@@ -161,23 +358,31 @@ if (!product) {
             // ====================================
 
             document
-                .getElementById("cartBtn")
+                .getElementById(
+                    "cartBtn"
+                )
                 ?.addEventListener(
                     "click",
                     function () {
 
+
                         let cart =
                             JSON.parse(
-                                localStorage.getItem("cart")
+                                localStorage.getItem(
+                                    "cart"
+                                )
                             ) || [];
 
 
-                        // Find existing product
+                        // =================================
+                        // FIND EXISTING PRODUCT
+                        // =================================
 
                         const existingProduct =
                             cart.find(
                                 item =>
-                                    item._id === product._id
+                                    item._id ===
+                                    product._id
                             );
 
 
@@ -185,7 +390,9 @@ if (!product) {
                         // ALREADY IN CART
                         // =================================
 
-                        if (existingProduct) {
+                        if (
+                            existingProduct
+                        ) {
 
                             const currentQuantity =
                                 Number(
@@ -196,14 +403,17 @@ if (!product) {
                             // Stock limit
 
                             if (
-                                currentQuantity >= stock
+                                currentQuantity >=
+                                stock
                             ) {
 
                                 Swal.fire({
 
-                                    icon: "warning",
+                                    icon:
+                                        "warning",
 
-                                    title: "Stock Limit",
+                                    title:
+                                        "Stock Limit",
 
                                     text:
                                         "You cannot add more than available stock."
@@ -211,6 +421,7 @@ if (!product) {
                                 });
 
                                 return;
+
                             }
 
 
@@ -235,22 +446,34 @@ if (!product) {
                                     product.name,
 
                                 description:
-                                    product.description || "",
+                                    product.description ||
+                                    "",
 
                                 price:
-                                    Number(product.price) || 0,
+                                    Number(
+                                        product.price
+                                    ) || 0,
 
                                 brand:
-                                    product.brand || "",
+                                    product.brand ||
+                                    "",
 
                                 image:
-                                    product.image || "",
+                                    product.image ||
+                                    productImages[0] ||
+                                    "",
+
+                                // NEW
+                                images:
+                                    productImages,
 
                                 featured:
-                                    product.featured || false,
+                                    product.featured ||
+                                    false,
 
                                 category:
-                                    product.category || "",
+                                    product.category ||
+                                    "",
 
                                 quantity:
                                     1
@@ -260,29 +483,39 @@ if (!product) {
                         }
 
 
-                        // Save cart
+                        // =================================
+                        // SAVE CART
+                        // =================================
 
                         localStorage.setItem(
                             "cart",
-                            JSON.stringify(cart)
+                            JSON.stringify(
+                                cart
+                            )
                         );
 
 
-                        // Success message
+                        // =================================
+                        // SUCCESS
+                        // =================================
 
                         Swal.fire({
 
-                            icon: "success",
+                            icon:
+                                "success",
 
-                            title: "Added To Cart",
+                            title:
+                                "Added To Cart",
 
                             text:
                                 product.name +
                                 " has been added to your cart.",
 
-                            timer: 1300,
+                            timer:
+                                1300,
 
-                            showConfirmButton: false
+                            showConfirmButton:
+                                false
 
                         });
 
@@ -295,32 +528,65 @@ if (!product) {
             // ========================================
 
             document
-                .getElementById("buyBtn")
+                .getElementById(
+                    "buyBtn"
+                )
                 ?.addEventListener(
                     "click",
                     function () {
 
+
                         let cart =
                             JSON.parse(
-                                localStorage.getItem("cart")
+                                localStorage.getItem(
+                                    "cart"
+                                )
                             ) || [];
 
 
-                        // Check whether product
-                        // already exists
+                        // =================================
+                        // CHECK EXISTING PRODUCT
+                        // =================================
 
                         const existingProduct =
                             cart.find(
                                 item =>
-                                    item._id === product._id
+                                    item._id ===
+                                    product._id
                             );
 
 
-                        if (existingProduct) {
+                        // =================================
+                        // EXISTING
+                        // =================================
 
-                            existingProduct.quantity = 1;
+                        if (
+                            existingProduct
+                        ) {
 
-                        } else {
+                            existingProduct.quantity =
+                                1;
+
+
+                            // Update images too
+
+                            existingProduct.images =
+                                productImages;
+
+
+                            existingProduct.image =
+                                product.image ||
+                                productImages[0] ||
+                                "";
+
+                        }
+
+
+                        // =================================
+                        // NEW PRODUCT
+                        // =================================
+
+                        else {
 
                             cart.push({
 
@@ -331,22 +597,34 @@ if (!product) {
                                     product.name,
 
                                 description:
-                                    product.description || "",
+                                    product.description ||
+                                    "",
 
                                 price:
-                                    Number(product.price) || 0,
+                                    Number(
+                                        product.price
+                                    ) || 0,
 
                                 brand:
-                                    product.brand || "",
+                                    product.brand ||
+                                    "",
 
                                 image:
-                                    product.image || "",
+                                    product.image ||
+                                    productImages[0] ||
+                                    "",
+
+                                // NEW
+                                images:
+                                    productImages,
 
                                 category:
-                                    product.category || "",
+                                    product.category ||
+                                    "",
 
                                 featured:
-                                    product.featured || false,
+                                    product.featured ||
+                                    false,
 
                                 quantity:
                                     1
@@ -356,15 +634,21 @@ if (!product) {
                         }
 
 
-                        // Save cart
+                        // =================================
+                        // SAVE CART
+                        // =================================
 
                         localStorage.setItem(
                             "cart",
-                            JSON.stringify(cart)
+                            JSON.stringify(
+                                cart
+                            )
                         );
 
 
-                        // Go checkout
+                        // =================================
+                        // GO CHECKOUT
+                        // =================================
 
                         window.location.href =
                             "checkout.html";
@@ -388,8 +672,13 @@ if (!product) {
                     class="outStockBtn"
                     disabled
                 >
-                    <i class="fa-solid fa-box-open"></i>
+
+                    <i
+                        class="fa-solid fa-box-open"
+                    ></i>
+
                     Out Of Stock
+
                 </button>
 
             `;

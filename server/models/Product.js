@@ -27,9 +27,22 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
 
+    // ==========================================
+    // MAIN / OLD IMAGE
+    // ==========================================
+
     image: {
       type: String,
       default: "",
+    },
+
+    // ==========================================
+    // MULTIPLE PRODUCT IMAGES
+    // ==========================================
+
+    images: {
+      type: [String],
+      default: [],
     },
 
     brand: {
@@ -52,8 +65,13 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+
 const Product =
     mongoose.models.Product ||
-    mongoose.model("Product", productSchema);
+    mongoose.model(
+      "Product",
+      productSchema
+    );
+
 
 module.exports = Product;

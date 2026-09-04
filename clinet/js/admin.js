@@ -20,8 +20,23 @@ const cancelEditBtn =
 const imageInput =
     document.getElementById("image");
 
+const image2Input =
+    document.getElementById("image2");
+
+const image3Input =
+    document.getElementById("image3");
+
+const image4Input =
+    document.getElementById("image4");
+
+const image5Input =
+    document.getElementById("image5");
+
 const preview =
     document.getElementById("preview");
+
+const previewPlaceholder =
+    document.getElementById("previewPlaceholder");
 
 const featuredInput =
     document.getElementById("featured");
@@ -33,12 +48,15 @@ let editId = null;
 // ADMIN LOGIN CHECK
 // ======================================================
 
-if (localStorage.getItem("admin") !== "true") {
+if (
+    localStorage.getItem("admin") !== "true"
+) {
 
     alert("Please login first.");
 
     window.location.href =
         "adminLogin.html";
+
 }
 
 
@@ -56,12 +74,15 @@ async function loadProducts() {
         const result =
             await res.json();
 
+
         console.log(
             "Products API Response:",
             result
         );
 
+
         productList.innerHTML = "";
+
 
         if (
             !result.success ||
@@ -72,118 +93,199 @@ async function loadProducts() {
                 "<p>Unable to load products.</p>";
 
             return;
+
         }
 
 
-        if (result.data.length === 0) {
+        if (
+            result.data.length === 0
+        ) {
 
             productList.innerHTML =
                 "<p>No products found.</p>";
 
             return;
+
         }
 
 
-        result.data.forEach(product => {
+        result.data.forEach(
+            product => {
 
-            productList.innerHTML += `
 
-                <div class="card product-admin-card">
+                const mainImage =
+                    product.image ||
+                    (
+                        Array.isArray(
+                            product.images
+                        )
+                            ?
+                            product.images[0]
+                            :
+                            ""
+                    ) ||
+                    "https://via.placeholder.com/300?text=No+Image";
 
-                    <div class="admin-product-image">
 
-                        <img
-                            src="${
-                                product.image ||
-                                "https://via.placeholder.com/300?text=No+Image"
-                            }"
-                            alt="${product.name || "Product"}"
-                            onerror="
-                                this.src='https://via.placeholder.com/300?text=No+Image'
-                            "
+                productList.innerHTML += `
+
+                    <div
+                        class="card product-admin-card"
+                    >
+
+                        <div
+                            class="admin-product-image"
                         >
 
-                    </div>
-
-
-                    <div class="admin-product-info">
-
-                        <span class="admin-category">
-
-                            ${
-                                product.category ||
-                                "Product"
-                            }
-
-                        </span>
-
-
-                        <h2>
-                            ${product.name || ""}
-                        </h2>
-
-
-                        <p>
-                            ${
-                                product.description ||
-                                ""
-                            }
-                        </p>
-
-
-                        <h3>
-                            ₹${
-                                Number(
-                                    product.price || 0
-                                ).toLocaleString("en-IN")
-                            }
-                        </h3>
-
-
-                        <p>
-                            Stock:
-                            ${product.stock || 0}
-                        </p>
-
-
-                        <p class="featured-status">
-
-                            ${
-                                product.featured
-                                    ? "⭐ Showing in Home Slider"
-                                    : "○ Not in Home Slider"
-                            }
-
-                        </p>
-
-
-                        <div class="admin-product-actions">
-
-                            <button
-                                type="button"
-                                onclick="editProduct('${product._id}')"
+                            <img
+                                src="${mainImage}"
+                                alt="${
+                                    product.name ||
+                                    "Product"
+                                }"
+                                onerror="
+                                    this.src='https://via.placeholder.com/300?text=No+Image'
+                                "
                             >
-                                Edit
-                            </button>
+
+                        </div>
 
 
-                            <button
-                                type="button"
-                                class="deleteBtn"
-                                onclick="deleteProduct('${product._id}')"
+                        <div
+                            class="admin-product-info"
+                        >
+
+                            <span
+                                class="admin-category"
                             >
-                                Delete
-                            </button>
+
+                                ${
+                                    product.category ||
+                                    "Product"
+                                }
+
+                            </span>
+
+
+                            <h2>
+
+                                ${
+                                    product.name ||
+                                    ""
+                                }
+
+                            </h2>
+
+
+                            <p>
+
+                                ${
+                                    product.description ||
+                                    ""
+                                }
+
+                            </p>
+
+
+                            <h3>
+
+                                ₹${
+                                    Number(
+                                        product.price ||
+                                        0
+                                    ).toLocaleString(
+                                        "en-IN"
+                                    )
+                                }
+
+                            </h3>
+
+
+                            <p>
+
+                                Stock:
+                                ${
+                                    product.stock ||
+                                    0
+                                }
+
+                            </p>
+
+
+                            <p
+                                class="featured-status"
+                            >
+
+                                ${
+                                    product.featured
+                                        ?
+                                    "⭐ Showing in Home Slider"
+                                        :
+                                    "○ Not in Home Slider"
+                                }
+
+                            </p>
+
+
+                            <p
+                                style="
+                                    font-size:12px;
+                                    color:#64748b;
+                                "
+                            >
+
+                                ${
+                                    Array.isArray(
+                                        product.images
+                                    )
+                                    ?
+                                    product.images.length
+                                    : 1
+                                }
+
+                                image(s)
+
+                            </p>
+
+
+                            <div
+                                class="admin-product-actions"
+                            >
+
+                                <button
+                                    type="button"
+                                    onclick="
+                                        editProduct(
+                                            '${product._id}'
+                                        )
+                                    "
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="deleteBtn"
+                                    onclick="
+                                        deleteProduct(
+                                            '${product._id}'
+                                        )
+                                    "
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                `;
 
-            `;
-
-        });
+            }
+        );
 
     }
 
@@ -194,10 +296,62 @@ async function loadProducts() {
             error
         );
 
+
         productList.innerHTML =
             "<p>Unable to load products.</p>";
 
     }
+
+}
+
+
+// ======================================================
+// GET PRODUCT IMAGES
+// ======================================================
+
+function getProductImages() {
+
+    const images = [];
+
+
+    const image1 =
+        imageInput?.value.trim() || "";
+
+    const image2 =
+        image2Input?.value.trim() || "";
+
+    const image3 =
+        image3Input?.value.trim() || "";
+
+    const image4 =
+        image4Input?.value.trim() || "";
+
+    const image5 =
+        image5Input?.value.trim() || "";
+
+
+    if (image1) {
+        images.push(image1);
+    }
+
+    if (image2) {
+        images.push(image2);
+    }
+
+    if (image3) {
+        images.push(image3);
+    }
+
+    if (image4) {
+        images.push(image4);
+    }
+
+    if (image5) {
+        images.push(image5);
+    }
+
+
+    return images;
 
 }
 
@@ -214,12 +368,20 @@ form.addEventListener(
 
 
         // ==================================================
-        // GET VALUES
+        // GET IMAGES
         // ==================================================
 
-        const imageURL =
-            imageInput.value.trim();
+        const images =
+            getProductImages();
 
+
+        const imageURL =
+            images[0] || "";
+
+
+        // ==================================================
+        // PRODUCT DATA
+        // ==================================================
 
         const productData = {
 
@@ -229,11 +391,13 @@ form.addEventListener(
                     .value
                     .trim(),
 
+
             description:
                 document
                     .getElementById("description")
                     .value
                     .trim(),
+
 
             price:
                 Number(
@@ -242,17 +406,20 @@ form.addEventListener(
                         .value
                 ),
 
+
             category:
                 document
                     .getElementById("category")
                     .value
                     .trim(),
 
+
             brand:
                 document
                     .getElementById("brand")
                     .value
                     .trim(),
+
 
             stock:
                 Number(
@@ -261,8 +428,16 @@ form.addEventListener(
                         .value
                 ),
 
+
+            // Old field
             image:
                 imageURL,
+
+
+            // New multiple images field
+            images:
+                images,
+
 
             featured:
                 featuredInput.checked
@@ -279,6 +454,13 @@ form.addEventListener(
             productData.image
         );
 
+
+        console.log(
+            "MULTIPLE IMAGES BEING SENT:",
+            productData.images
+        );
+
+
         console.log(
             "PRODUCT DATA:",
             productData
@@ -289,7 +471,9 @@ form.addEventListener(
         // VALIDATION
         // ==================================================
 
-        if (!productData.name) {
+        if (
+            !productData.name
+        ) {
 
             Swal.fire({
 
@@ -301,10 +485,13 @@ form.addEventListener(
             });
 
             return;
+
         }
 
 
-        if (!productData.image) {
+        if (
+            !productData.image
+        ) {
 
             Swal.fire({
 
@@ -314,11 +501,12 @@ form.addEventListener(
                     "Image URL Required",
 
                 text:
-                    "Please enter product image URL."
+                    "Please enter at least the main product image URL."
 
             });
 
             return;
+
         }
 
 
@@ -326,12 +514,16 @@ form.addEventListener(
         // BUTTON DISABLE
         // ==================================================
 
-        submitBtn.disabled = true;
+        submitBtn.disabled =
+            true;
+
 
         submitBtn.innerText =
             editId
-                ? "Updating..."
-                : "Adding...";
+                ?
+            "Updating..."
+                :
+            "Adding...";
 
 
         // ==================================================
@@ -340,14 +532,18 @@ form.addEventListener(
 
         const url =
             editId
-                ? `${API}/${editId}`
-                : API;
+                ?
+            `${API}/${editId}`
+                :
+            API;
 
 
         const method =
             editId
-                ? "PUT"
-                : "POST";
+                ?
+            "PUT"
+                :
+            "POST";
 
 
         try {
@@ -362,7 +558,6 @@ form.addEventListener(
                     {
 
                         method:
-
                             method,
 
                         headers:
@@ -395,6 +590,7 @@ form.addEventListener(
                 res.status
             );
 
+
             console.log(
                 "PRODUCT API RESPONSE:",
                 responseText
@@ -414,6 +610,7 @@ form.addEventListener(
 
 
             let result;
+
 
             try {
 
@@ -439,6 +636,20 @@ form.addEventListener(
             );
 
 
+            if (
+                result.success === false
+            ) {
+
+                throw new Error(
+
+                    result.message ||
+                    "Product operation failed"
+
+                );
+
+            }
+
+
             // ==================================================
             // SUCCESS
             // ==================================================
@@ -450,13 +661,17 @@ form.addEventListener(
 
                 title:
                     editId
-                        ? "Product Updated"
-                        : "Product Added",
+                        ?
+                    "Product Updated"
+                        :
+                    "Product Added",
 
                 text:
                     editId
-                        ? "Product updated successfully."
-                        : "Product added successfully.",
+                        ?
+                    "Product updated successfully."
+                        :
+                    "Product added successfully.",
 
                 timer:
                     1300,
@@ -475,7 +690,7 @@ form.addEventListener(
 
 
             // ==================================================
-            // RELOAD PRODUCTS
+            // RELOAD
             // ==================================================
 
             await loadProducts();
@@ -512,10 +727,13 @@ form.addEventListener(
             submitBtn.disabled =
                 false;
 
+
             submitBtn.innerText =
                 editId
-                    ? "Update Product"
-                    : "Add Product";
+                    ?
+                "Update Product"
+                    :
+                "Add Product";
 
         }
 
@@ -604,32 +822,91 @@ async function editProduct(id) {
 
 
         // ==================================================
-        // IMAGE URL
+        // GET IMAGES
         // ==================================================
 
-        imageInput.value =
-            product.image || "";
+        let images = [];
 
 
-        if (product.image) {
+        if (
+            Array.isArray(
+                product.images
+            )
+        ) {
 
-            preview.src =
-                product.image;
+            images =
+                [
+                    ...product.images
+                ];
 
-            preview.style.display =
-                "block";
+        }
+
+
+        // Old image compatibility
+
+        if (
+            product.image &&
+            !images.includes(
+                product.image
+            )
+        ) {
+
+            images.unshift(
+                product.image
+            );
 
         }
 
-        else {
 
-            preview.src =
-                "";
+        // ==================================================
+        // FILL IMAGE FIELDS
+        // ==================================================
 
-            preview.style.display =
-                "none";
+        if (imageInput) {
+
+            imageInput.value =
+                images[0] || "";
 
         }
+
+
+        if (image2Input) {
+
+            image2Input.value =
+                images[1] || "";
+
+        }
+
+
+        if (image3Input) {
+
+            image3Input.value =
+                images[2] || "";
+
+        }
+
+
+        if (image4Input) {
+
+            image4Input.value =
+                images[3] || "";
+
+        }
+
+
+        if (image5Input) {
+
+            image5Input.value =
+                images[4] || "";
+
+        }
+
+
+        // ==================================================
+        // PREVIEW
+        // ==================================================
+
+        updatePreview();
 
 
         // ==================================================
@@ -731,7 +1008,9 @@ async function deleteProduct(id) {
         });
 
 
-    if (!confirm.isConfirmed) {
+    if (
+        !confirm.isConfirmed
+    ) {
 
         return;
 
@@ -831,6 +1110,7 @@ function resetForm() {
 
     form.reset();
 
+
     editId =
         null;
 
@@ -849,13 +1129,46 @@ function resetForm() {
         "Add / Update Product";
 
 
-    preview.src =
-        "";
+    if (preview) {
 
-    preview.style.display =
-        "none";
+        preview.src =
+            "";
+
+        preview.style.display =
+            "none";
+
+    }
+
+
+    if (previewPlaceholder) {
+
+        previewPlaceholder.style.display =
+            "flex";
+
+    }
+
+
+    if (image2Input) {
+        image2Input.value = "";
+    }
+
+    if (image3Input) {
+        image3Input.value = "";
+    }
+
+    if (image4Input) {
+        image4Input.value = "";
+    }
+
+    if (image5Input) {
+        image5Input.value = "";
+    }
 
 }
+
+
+window.resetForm =
+    resetForm;
 
 
 // ======================================================
@@ -869,18 +1182,20 @@ cancelEditBtn?.addEventListener(
 
 
 // ======================================================
-// IMAGE URL PREVIEW
+// IMAGE PREVIEW
 // ======================================================
 
-imageInput?.addEventListener(
-    "input",
-    () => {
+function updatePreview() {
 
-        const url =
-            imageInput.value.trim();
+    const images =
+        getProductImages();
 
 
-        if (!url) {
+    if (
+        !images.length
+    ) {
+
+        if (preview) {
 
             preview.src =
                 "";
@@ -888,16 +1203,63 @@ imageInput?.addEventListener(
             preview.style.display =
                 "none";
 
-            return;
+        }
+
+
+        if (previewPlaceholder) {
+
+            previewPlaceholder.style.display =
+                "flex";
 
         }
 
 
+        return;
+
+    }
+
+
+    // Show first image as main preview
+
+    if (preview) {
+
         preview.src =
-            url;
+            images[0];
 
         preview.style.display =
             "block";
+
+    }
+
+
+    if (previewPlaceholder) {
+
+        previewPlaceholder.style.display =
+            "none";
+
+    }
+
+}
+
+
+// ======================================================
+// IMAGE URL PREVIEW
+// ======================================================
+
+[
+    imageInput,
+    image2Input,
+    image3Input,
+    image4Input,
+    image5Input
+]
+.forEach(
+    input => {
+
+        input?.addEventListener(
+            "input",
+            updatePreview
+        );
 
     }
 );
@@ -914,6 +1276,14 @@ preview?.addEventListener(
         preview.style.display =
             "none";
 
+
+        if (previewPlaceholder) {
+
+            previewPlaceholder.style.display =
+                "flex";
+
+        }
+
     }
 );
 
@@ -923,7 +1293,9 @@ preview?.addEventListener(
 // ======================================================
 
 document
-    .getElementById("logoutBtn")
+    .getElementById(
+        "logoutBtn"
+    )
     ?.addEventListener(
         "click",
         () => {
@@ -931,6 +1303,7 @@ document
             localStorage.removeItem(
                 "admin"
             );
+
 
             window.location.href =
                 "adminLogin.html";
